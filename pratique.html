@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À réserver &amp; Infos pratiques — New York · 2 → 9 décembre</title>
+  <meta name="description" content="Checklist des réservations, budget et infos pratiques pour le voyage à New York du 2 au 9 décembre — Alexandre & Sarah." />
+  <meta name="theme-color" content="#FAF6F0" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20x%3D%2250%22%20y%3D%22.9em%22%20text-anchor%3D%22middle%22%20font-size%3D%2288%22%3E%F0%9F%97%BD%3C%2Ftext%3E%3C%2Fsvg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .moma-brick {
+      --m-bg: #FAF6F0;
+      --m-surface: #FFFDF9;
+      --m-stone: #F2EAE0;
+      --m-brick-soft: #F7EAE4;
+
+      --m-ink: #1F1815;
+      --m-ink-2: #584B44;
+      --m-ink-3: #8A7A70;
+      --m-rule: #E3D8CC;
+
+      --brick: #A83E2B;
+      --brick-dark: #8C3120;
+      --pine: #2E4F3E;
+      --ochre: #C48A2B;
+      --brownstone: #5C4338;
+
+      --font-display: 'Space Grotesk', 'Helvetica Neue', Helvetica, -apple-system, Arial, sans-serif;
+      --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+      --font-body: 'Inter', 'Helvetica Neue', Helvetica, -apple-system, Arial, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+      --container: 1140px;
+      --gutter: clamp(1.15rem, 3.8vw, 2.75rem);
+      --radius: 3px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      background: var(--m-bg);
+      color: var(--m-ink);
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .moma-brick *, .moma-brick *::before, .moma-brick *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; background: #FAF6F0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    main { flex: 1; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+    :focus-visible { outline: 2px solid #A83E2B; outline-offset: 3px; }
+
+    .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .mono-label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.11em; text-transform: uppercase; color: var(--m-ink-3); }
+
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(250,246,240,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--m-rule); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; height: 62px; }
+    .brand { display: flex; align-items: center; gap: 0.7rem; }
+    .brand-brick { width: 14px; height: 7px; background: var(--brick); border-radius: 1px; flex-shrink: 0; }
+    .brand-mark { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.04em; }
+    .brand-meta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--m-ink-3); border-left: 1px solid var(--m-rule); padding-left: 0.75rem; }
+    .main-nav { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-link { font-size: 0.86rem; font-weight: 500; color: var(--m-ink-2); position: relative; padding-block: 0.2rem; transition: color 180ms var(--ease); }
+    .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1.5px; background: var(--brick); transform: scaleX(0); transform-origin: left; transition: transform 200ms var(--ease); }
+    .nav-link:hover, .nav-link.is-active { color: var(--brick); }
+    .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); }
+    .nav-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 17px; height: 17px; padding-inline: 4px; margin-left: 0.25rem; border-radius: 999px; background: var(--brick); color: #FFFDF9; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500; line-height: 1; vertical-align: middle; }
+    .nav-badge[hidden] { display: none; }
+
+    .sub-hero { padding-top: clamp(1.75rem, 4vw, 2.75rem); padding-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+    .sub-hero-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; padding-top: 0.85rem; padding-bottom: 1.2rem; border-top: 2px solid var(--brick); }
+    .back-link { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brick); padding: 0.3rem 0.65rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); transition: all 160ms var(--ease); }
+    .back-link:hover { border-color: var(--brick); background: var(--m-brick-soft); }
+    .sub-hero-title { margin: 0; font-family: var(--font-display); font-size: clamp(2.1rem, 4.5vw, 3.25rem); font-weight: 700; line-height: 1.02; letter-spacing: -0.04em; }
+    .sub-hero-sub { margin: 0.5rem 0 0; font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; color: var(--m-ink-2); }
+
+    .section { padding-block: clamp(2rem, 4.5vw, 3.5rem); border-top: 1px solid var(--m-rule); }
+    .bottom-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(2rem, 4.5vw, 4rem); }
+    .col-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+    .col-title { margin: 0.35rem 0 1.25rem; font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; letter-spacing: -0.03em; }
+    .col-head-actions { display: inline-flex; align-items: center; gap: 0.45rem; }
+    .progress-pill { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.22rem 0.55rem; border-radius: 999px; background: var(--m-stone); border: 1px solid var(--m-rule); color: var(--m-ink-2); }
+    .progress-pill.is-complete { background: #E9F1EC; border-color: rgba(46,79,62,0.35); color: var(--pine); }
+    .day-note-btn { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--m-ink-3); padding: 0.2rem 0.5rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-bg); white-space: nowrap; transition: all 160ms var(--ease); }
+    .day-note-btn:hover { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); }
+
+    .booking-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--brick); }
+    .booking-item { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 0.75rem 1rem; align-items: start; padding-block: 1.05rem; border-bottom: 1px solid var(--m-rule); }
+    .booking-item.is-done .booking-name { text-decoration: line-through; color: var(--m-ink-3); }
+    .booking-item.is-done .booking-detail { opacity: 0.55; }
+    .check-btn { width: 20px; height: 20px; margin-top: 0.12rem; border: 1.5px solid var(--brownstone); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; background: var(--m-surface); transition: all 160ms var(--ease); }
+    .check-btn:hover { border-color: var(--brick); background: var(--m-brick-soft); }
+    .check-btn[aria-pressed="true"] { background: var(--brick); border-color: var(--brick); color: #FFFDF9; }
+    .check-btn svg { width: 12px; height: 12px; opacity: 0; transition: opacity 140ms var(--ease); }
+    .check-btn[aria-pressed="true"] svg { opacity: 1; }
+    .booking-name { font-family: var(--font-display); font-size: 1rem; font-weight: 600; letter-spacing: -0.015em; }
+    .booking-detail { margin-top: 0.2rem; font-size: 0.86rem; color: var(--m-ink-2); }
+    .booking-link { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.36rem 0.7rem; border: 1px solid var(--brick); border-radius: var(--radius); color: var(--brick); background: var(--m-surface); white-space: nowrap; transition: all 160ms var(--ease); }
+    .booking-link:hover { background: var(--brick); color: #FFFDF9; }
+    .budget-box { margin-top: 1.25rem; padding: 1rem 1.2rem; background: var(--m-stone); border-left: 3px solid var(--pine); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.88rem; color: var(--m-ink-2); line-height: 1.55; }
+    .budget-box strong { color: var(--m-ink); }
+
+    .info-list { margin: 0; border-top: 2px solid var(--brownstone); }
+    .info-row { padding-block: 0.95rem; border-bottom: 1px solid var(--m-rule); }
+    .info-row dt { font-family: var(--font-mono); font-size: 0.69rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--m-ink-3); margin-bottom: 0.28rem; }
+    .info-row dd { margin: 0; font-size: 0.92rem; color: var(--m-ink-2); line-height: 1.5; }
+    .info-row dd strong { color: var(--m-ink); font-weight: 600; }
+    .inline-link { color: var(--brick); border-bottom: 1px solid rgba(168,62,43,0.45); padding-bottom: 1px; transition: border-color 160ms var(--ease), color 160ms var(--ease); }
+    .inline-link:hover { color: var(--brick-dark); border-color: var(--brick-dark); }
+
+    .site-footer { border-top: 2px solid var(--brick); padding-block: 2rem 2.75rem; background: var(--m-stone); }
+    .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--m-ink-2); }
+
+    @media (max-width: 960px) {
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .brand-meta { display: none; }
+      .main-nav { gap: 0.85rem; font-size: 0.82rem; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+      .main-nav::-webkit-scrollbar { display: none; }
+      .booking-item { grid-template-columns: 22px minmax(0, 1fr); }
+      .booking-link { grid-column: 2; justify-self: start; margin-top: 0.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="moma-brick">
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-brick" aria-hidden="true"></span>
+          <span class="brand-mark">NYC</span>
+          <span class="brand-meta">2 → 9 déc · Alexandre &amp; Sarah</span>
+        </a>
+        <nav class="main-nav" aria-label="Navigation principale">
+          <a href="index.html#programme" class="nav-link">Programme</a>
+          <a href="index.html#carte" class="nav-link">Carte</a>
+          <a href="pratique.html" class="nav-link is-active" aria-current="page">À réserver &amp; Pratique</a>
+          <a href="index.html#bons-plans" class="nav-link">Adresses</a>
+          <a href="index.html#notes" class="nav-link">Notes<span class="nav-badge" id="nav-notes-count" hidden>0</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="sub-hero">
+        <div class="container">
+          <div class="sub-hero-top">
+            <a href="index.html" class="back-link">← Retour au programme</a>
+            <span class="mono-label">New York · 2 → 9 décembre</span>
+          </div>
+          <h1 class="sub-hero-title">À réserver &amp; Infos pratiques</h1>
+          <p class="sub-hero-sub">Checklist des réservations, budget visites, transfert JFK et métro OMNY.</p>
+        </div>
+      </section>
+
+      <section class="section" id="reserver">
+        <div class="container">
+          <div class="bottom-grid">
+            <div>
+              <span class="mono-label">01 — Checklist</span>
+              <div class="col-title-row">
+                <h2 class="col-title">À réserver</h2>
+                <div class="col-head-actions">
+                  <span class="progress-pill" id="booking-progress">0 / 4</span>
+                  <a href="index.html?note=reserver#notes" class="day-note-btn">+ Note</a>
+                </div>
+              </div>
+              <ul class="booking-list" id="booking-list">
+                <li class="booking-item" data-booking-id="summit">
+                  <button type="button" class="check-btn" aria-pressed="false" aria-label="SUMMIT One Vanderbilt"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
+                  <div><div class="booking-name">SUMMIT One Vanderbilt</div><div class="booking-detail">jeu 3, 10h (~$46/pers · créneau horaire à réserver en avance)</div></div>
+                  <a class="booking-link" href="https://summitov.com/" target="_blank" rel="noopener noreferrer">Réserver ↗</a>
+                </li>
+                <li class="booking-item" data-booking-id="ellis-island">
+                  <button type="button" class="check-btn" aria-pressed="false" aria-label="Ellis Island (Statue City Cruises)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
+                  <div><div class="booking-name">Ellis Island (Statue City Cruises)</div><div class="booking-detail">lun 7, 9h ($26/pers · site officiel uniquement)</div></div>
+                  <a class="booking-link" href="https://www.cityexperiences.com/new-york/city-cruises/statue/" target="_blank" rel="noopener noreferrer">Réserver ↗</a>
+                </li>
+                <li class="booking-item" data-booking-id="nyc-ferry">
+                  <button type="button" class="check-btn" aria-pressed="false" aria-label="NYC Ferry (Williamsburg → DUMBO)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
+                  <div><div class="booking-name">NYC Ferry (Williamsburg → DUMBO)</div><div class="booking-detail">sam 5, après-midi ($5/pers depuis oct. 2026 · sans siège réservé, billet sur l’app NYC Ferry ou borne au quai)</div></div>
+                  <a class="booking-link" href="https://www.ferry.nyc/ticketing-info/" target="_blank" rel="noopener noreferrer">Billets / App ↗</a>
+                </li>
+                <li class="booking-item" data-booking-id="dej-google">
+                  <button type="button" class="check-btn" aria-pressed="false" aria-label="Déj Google (go/guest)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
+                  <div><div class="booking-name">Déj Google (go/guest)</div><div class="booking-detail">inscrire Sarah + passeport physique obligatoire pour lun 7 (St. John’s) et mar 8 (Chelsea) ($0)</div></div>
+                </li>
+              </ul>
+              <div class="budget-box">
+                <strong>Budget visites à 2 : ~$149 (~$75/pers)</strong> — sans pass, avec badge Google (AMNH $0 · Met $0 · MoMA $5 · SUMMIT ~$92 · Ellis Island $52) + NYC Ferry $10 à deux.
+              </div>
+            </div>
+
+            <div id="pratique">
+              <span class="mono-label">02 — Logistique</span>
+              <h2 class="col-title">Infos pratiques</h2>
+              <dl class="info-list">
+                <div class="info-row"><dt>Appartement</dt><dd><strong>The Hollingsworth</strong> — 70 W 37th St, Midtown · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=The+Hollingsworth+70+W+37th+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>JFK ↔ Appart</dt><dd><strong>AirTrain + LIRR</strong> jusqu’à Penn Station · <strong>$14 / pers</strong>.</dd></div>
+                <div class="info-row"><dt>Métro OMNY</dt><dd><strong>$3 / trajet</strong>, plafonné à <strong>$35 / 7 jours</strong> (toujours passer la même carte ou Apple Pay).</dd></div>
+                <div class="info-row"><dt>Arrivée</dt><dd><strong>Mercredi 2 décembre à 19h30</strong> à JFK.</dd></div>
+                <div class="info-row"><dt>Départ</dt><dd><strong>Mercredi 9 décembre</strong> · check-out 11h, bagages gardés à la réception · Penn Station → JFK ($14/pers).</dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span><strong>New York · 2 → 9 décembre</strong> — Alexandre &amp; Sarah</span>
+        <span>The Hollingsworth · 70 W 37th St</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'nyc_alexandre_sarah_bookings_v1';
+    const NOTES_KEY = 'nyc_alexandre_sarah_notes_v1';
+
+    function loadChecked() {
+      try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+      catch { return new Set(); }
+    }
+    function saveChecked(set) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...set])); }
+      catch {}
+    }
+
+    const checked = loadChecked();
+    const items = [...document.querySelectorAll('[data-booking-id]')];
+    const progressEl = document.getElementById('booking-progress');
+
+    function syncBookingsUi() {
+      let doneCount = 0;
+      items.forEach(item => {
+        const id = item.getAttribute('data-booking-id');
+        const isDone = checked.has(id);
+        if (isDone) doneCount += 1;
+        item.classList.toggle('is-done', isDone);
+        item.querySelector('.check-btn')?.setAttribute('aria-pressed', isDone ? 'true' : 'false');
+      });
+      if (progressEl) {
+        progressEl.textContent = `${doneCount} / ${items.length} fait${doneCount > 1 ? 's' : ''}`;
+        progressEl.classList.toggle('is-complete', doneCount === items.length && items.length > 0);
+      }
+    }
+
+    document.getElementById('booking-list')?.addEventListener('click', e => {
+      const btn = e.target.closest('.check-btn');
+      if (!btn) return;
+      const item = btn.closest('[data-booking-id]');
+      const id = item.getAttribute('data-booking-id');
+      if (checked.has(id)) checked.delete(id);
+      else checked.add(id);
+      saveChecked(checked);
+      syncBookingsUi();
+    });
+
+    syncBookingsUi();
+
+    try {
+      const notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
+      const badge = document.getElementById('nav-notes-count');
+      if (badge && Array.isArray(notes) && notes.length > 0) {
+        badge.textContent = String(notes.length);
+        badge.hidden = false;
+      }
+    } catch {}
+  </script>
+</body>
+</html>

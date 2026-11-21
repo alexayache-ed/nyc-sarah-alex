@@ -424,8 +424,7 @@
         <nav class="main-nav" aria-label="Navigation principale">
           <a href="#programme" class="nav-link">Programme</a>
           <a href="#carte" class="nav-link">Carte</a>
-          <a href="#reserver" class="nav-link">À réserver</a>
-          <a href="#pratique" class="nav-link">Pratique</a>
+          <a href="pratique.html" class="nav-link">À réserver &amp; Pratique</a>
           <a href="#bons-plans" class="nav-link">Adresses</a>
           <a href="#notes" class="nav-link">Notes<span class="nav-badge" id="nav-notes-count" hidden>0</span></a>
         </nav>
@@ -614,53 +613,6 @@
 
           <div class="travel-strip travel-strip--bottom">
             <span><strong>Mer 9 déc · Départ</strong> Check-out 11h, bagages gardés à la réception · Penn Station → JFK ($14/pers).</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="reserver">
-        <div class="container">
-          <div class="bottom-grid">
-            <div>
-              <span class="mono-label">02 — Checklist</span>
-              <h2 class="col-title">À réserver</h2>
-              <ul class="booking-list" id="booking-list">
-                <li class="booking-item" data-booking-id="summit">
-                  <button type="button" class="check-btn" aria-pressed="false" aria-label="SUMMIT One Vanderbilt"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
-                  <div><div class="booking-name">SUMMIT One Vanderbilt</div><div class="booking-detail">jeu 3, 10h (~$46/pers · créneau horaire à réserver en avance)</div></div>
-                  <a class="booking-link" href="https://summitov.com/" target="_blank" rel="noopener noreferrer">Réserver ↗</a>
-                </li>
-                <li class="booking-item" data-booking-id="ellis-island">
-                  <button type="button" class="check-btn" aria-pressed="false" aria-label="Ellis Island (Statue City Cruises)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
-                  <div><div class="booking-name">Ellis Island (Statue City Cruises)</div><div class="booking-detail">lun 7, 9h ($26/pers · site officiel uniquement)</div></div>
-                  <a class="booking-link" href="https://www.cityexperiences.com/new-york/city-cruises/statue/" target="_blank" rel="noopener noreferrer">Réserver ↗</a>
-                </li>
-                <li class="booking-item" data-booking-id="nyc-ferry">
-                  <button type="button" class="check-btn" aria-pressed="false" aria-label="NYC Ferry (Williamsburg → DUMBO)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
-                  <div><div class="booking-name">NYC Ferry (Williamsburg → DUMBO)</div><div class="booking-detail">sam 5, après-midi ($5/pers depuis oct. 2026 · sans siège réservé, billet sur l’app NYC Ferry ou borne au quai)</div></div>
-                  <a class="booking-link" href="https://www.ferry.nyc/ticketing-info/" target="_blank" rel="noopener noreferrer">Billets / App ↗</a>
-                </li>
-                <li class="booking-item" data-booking-id="dej-google">
-                  <button type="button" class="check-btn" aria-pressed="false" aria-label="Déj Google (go/guest)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M2.5 7.2L5.6 10.3L11.5 3.7"/></svg></button>
-                  <div><div class="booking-name">Déj Google (go/guest)</div><div class="booking-detail">inscrire Sarah + passeport physique obligatoire pour lun 7 (St. John’s) et mar 8 (Chelsea) ($0)</div></div>
-                </li>
-              </ul>
-              <div class="budget-box">
-                <strong>Budget visites à 2 : ~$149 (~$75/pers)</strong> — sans pass, avec badge Google (AMNH $0 · Met $0 · MoMA $5 · SUMMIT ~$92 · Ellis Island $52) + NYC Ferry $10 à deux.
-              </div>
-            </div>
-
-            <div id="pratique">
-              <span class="mono-label">03 — Logistique</span>
-              <h2 class="col-title">Infos pratiques</h2>
-              <dl class="info-list">
-                <div class="info-row"><dt>Appartement</dt><dd><strong>The Hollingsworth</strong> — 70 W 37th St, Midtown · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=The+Hollingsworth+70+W+37th+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
-                <div class="info-row"><dt>JFK ↔ Appart</dt><dd><strong>AirTrain + LIRR</strong> jusqu’à Penn Station · <strong>$14 / pers</strong>.</dd></div>
-                <div class="info-row"><dt>Métro OMNY</dt><dd><strong>$3 / trajet</strong>, plafonné à <strong>$35 / 7 jours</strong> (toujours passer la même carte ou Apple Pay).</dd></div>
-                <div class="info-row"><dt>Arrivée</dt><dd><strong>Mercredi 2 décembre à 19h30</strong> à JFK.</dd></div>
-                <div class="info-row"><dt>Départ</dt><dd><strong>Mercredi 9 décembre</strong> · check-out 11h, bagages gardés à la réception · Penn Station → JFK ($14/pers).</dd></div>
-              </dl>
-            </div>
           </div>
         </div>
       </section>
@@ -1028,7 +980,7 @@
       item.querySelector('.check-btn').setAttribute('aria-pressed', isDone ? 'true' : 'false');
     });
 
-    document.getElementById('booking-list').addEventListener('click', e => {
+    document.getElementById('booking-list')?.addEventListener('click', e => {
       const btn = e.target.closest('.check-btn');
       if (!btn) return;
       const item = btn.closest('[data-booking-id]');
@@ -2071,6 +2023,13 @@
       setSyncUi(getSyncUrl() ? 'busy' : 'idle', getSyncUrl() ? 'Synchronisation…' : 'Mode local');
       if (getSyncUrl()) pullFromGDoc(false);
       checkHashImport();
+      try {
+        const noteScope = new URLSearchParams(location.search).get('note');
+        if (noteScope && SCOPE_BY_ID[noteScope]) {
+          if (scopeSelect) scopeSelect.value = noteScope;
+          setTimeout(() => noteInput?.focus(), 300);
+        }
+      } catch {}
     }
 
     initTripNotes();
