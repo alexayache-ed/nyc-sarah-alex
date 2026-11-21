@@ -362,6 +362,23 @@
     .notes-empty strong { color: var(--m-ink); }
     .notes-foot-hint { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--m-ink-3); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem 1.25rem; }
 
+    .notes-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem 0.9rem; margin-top: 0.35rem; }
+    .notes-title-line .section-title { margin-top: 0; }
+    .notes-sync-pill { display: inline-flex; align-items: center; gap: 0.38rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.24rem 0.58rem; border-radius: 999px; border: 1px solid var(--m-rule); background: var(--m-stone); color: var(--m-ink-2); }
+    .notes-sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--m-ink-3); flex-shrink: 0; }
+    .notes-sync-pill.is-ok { background: #E9F1EC; border-color: rgba(46,79,62,0.3); color: var(--pine); }
+    .notes-sync-pill.is-ok .notes-sync-dot { background: var(--pine); }
+    .notes-sync-pill.is-busy { background: #F7EFE2; border-color: rgba(196,138,43,0.4); color: #8A5E14; }
+    .notes-sync-pill.is-busy .notes-sync-dot { background: var(--ochre); }
+    .notes-sync-pill.is-err { background: var(--m-brick-soft); border-color: rgba(168,62,43,0.35); color: var(--brick); }
+    .notes-sync-pill.is-err .notes-sync-dot { background: var(--brick); }
+
+    .notes-config-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; padding: 0.85rem 1.1rem; margin-bottom: 1.15rem; background: var(--m-stone); border: 1px solid var(--m-rule); border-left: 3px solid var(--pine); border-radius: 0 var(--radius) var(--radius) 0; }
+    .notes-config-bar[hidden] { display: none; }
+    .notes-config-bar input { flex: 1; min-width: 240px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--m-ink); background: var(--m-surface); border: 1px solid var(--m-rule); border-radius: var(--radius); padding: 0.45rem 0.68rem; outline: none; }
+    .notes-config-bar input:focus { border-color: var(--pine); }
+    .notes-config-help { flex-basis: 100%; font-size: 0.8rem; color: var(--m-ink-2); }
+
     @media (max-width: 960px) {
       .days-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .days-grid.is-list .day-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -688,14 +705,26 @@
           <div class="section-head">
             <div>
               <span class="mono-label">06 — Carnet de modifications</span>
-              <h2 class="section-title">Notes &amp; Modifs</h2>
+              <div class="notes-title-line">
+                <h2 class="section-title">Notes &amp; Modifs</h2>
+                <span class="notes-sync-pill" id="notes-sync-pill"><span class="notes-sync-dot"></span><span id="notes-sync-label">Mode local</span></span>
+              </div>
             </div>
             <div class="map-head-actions">
+              <button type="button" class="map-action-btn" id="notes-refresh-btn" hidden>Actualiser ↻</button>
+              <button type="button" class="map-action-btn" id="notes-config-btn">Connecter GDoc</button>
               <button type="button" class="map-action-btn map-action-btn--primary" id="notes-copy-btn">Copier le récap</button>
               <button type="button" class="map-action-btn" id="notes-share-btn" title="Copier un lien contenant toutes vos notes pour l’envoyer par message">Partager le lien</button>
               <button type="button" class="map-action-btn" id="notes-clear-btn" hidden>Tout effacer</button>
             </div>
           </div>
+
+          <form class="notes-config-bar" id="notes-config-bar" hidden autocomplete="off">
+            <input type="url" id="notes-sync-url-input" placeholder="https://script.google.com/macros/s/…/exec" aria-label="URL de l’application Web Google Apps Script" />
+            <button type="submit" class="map-action-btn map-action-btn--primary">Connecter</button>
+            <button type="button" class="map-action-btn" id="notes-sync-disconnect" hidden>Déconnecter</button>
+            <div class="notes-config-help">Colle l’URL de déploiement de l’Application Web Google Apps Script (<code>apps-script/Code.gs</code>) pour synchroniser les notes en direct avec l’onglet <strong>Notes site</strong> du Google Doc.</div>
+          </form>
 
           <div class="notes-import-banner" id="notes-import-banner" hidden>
             <span id="notes-import-text">Des notes partagées ont été détectées dans ce lien.</span>
@@ -728,8 +757,8 @@
           <div id="notes-board-wrap"></div>
 
           <div class="notes-foot-hint">
-            <span>Sauvegardé localement dans ce navigateur · Clique sur « + Note » dans n’importe quelle journée pour annoter directement le planning.</span>
-            <span>« Copier le récap » génère un texte prêt à coller pour appliquer les modifs au site.</span>
+            <span id="notes-foot-status">Clique sur « + Note » dans n’importe quelle journée pour annoter directement le planning.</span>
+            <span>Synchronisable en direct avec l’onglet « Notes site » du Google Doc via Google Apps Script.</span>
           </div>
         </div>
       </section>
@@ -1410,10 +1439,13 @@
 
     initTripMap();
 
-    /* --- Local Notes & Modifications (Option 1: localStorage + Copy Recap + Share Link) --- */
+    /* --- Notes & Modifications (Synchro Google Doc via Apps Script + fallback localStorage) --- */
     function initTripNotes() {
+      // Une fois l'Application Web Apps Script déployée, coller l'URL ici pour que la synchro soit active pour tout le monde sans config :
+      const GDOC_SYNC_URL = '';
       const NOTES_KEY = 'nyc_alexandre_sarah_notes_v1';
       const AUTHOR_KEY = 'nyc_alexandre_sarah_author_v1';
+      const SYNC_URL_KEY = 'nyc_alexandre_sarah_gdoc_sync_url_v1';
 
       const NOTE_SCOPES = [
         { id: 'jeu-3',    short: 'Jeu 3',    label: 'Jeu 3 déc · Midtown & Noël',          color: '#A83E2B' },
@@ -1428,22 +1460,37 @@
       ];
       const SCOPE_BY_ID = Object.fromEntries(NOTE_SCOPES.map(s => [s.id, s]));
 
+      function normalizeNotesArray(raw) {
+        if (!Array.isArray(raw)) return [];
+        return raw.filter(n => n && typeof n.text === 'string' && n.text.trim()).map(n => ({
+          id: typeof n.id === 'string' ? n.id : makeNoteId(),
+          scope: SCOPE_BY_ID[n.scope] ? n.scope : 'general',
+          author: n.author === 'Sarah' ? 'Sarah' : (n.author === 'Alex' ? 'Alex' : ''),
+          text: n.text.trim(),
+          createdAt: typeof n.createdAt === 'number' ? n.createdAt : Date.now()
+        }));
+      }
+
       function loadNotes() {
-        try {
-          const raw = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
-          if (!Array.isArray(raw)) return [];
-          return raw.filter(n => n && typeof n.text === 'string' && n.text.trim()).map(n => ({
-            id: typeof n.id === 'string' ? n.id : makeNoteId(),
-            scope: SCOPE_BY_ID[n.scope] ? n.scope : 'general',
-            author: n.author === 'Sarah' ? 'Sarah' : (n.author === 'Alex' ? 'Alex' : ''),
-            text: n.text.trim(),
-            createdAt: typeof n.createdAt === 'number' ? n.createdAt : Date.now()
-          }));
-        } catch { return []; }
+        try { return normalizeNotesArray(JSON.parse(localStorage.getItem(NOTES_KEY) || '[]')); }
+        catch { return []; }
       }
 
       function saveNotes() {
         try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {}
+      }
+
+      function getSyncUrl() {
+        if (GDOC_SYNC_URL && GDOC_SYNC_URL.trim()) return GDOC_SYNC_URL.trim();
+        try { return (localStorage.getItem(SYNC_URL_KEY) || '').trim(); }
+        catch { return ''; }
+      }
+
+      function saveCustomSyncUrl(url) {
+        try {
+          if (url) localStorage.setItem(SYNC_URL_KEY, url);
+          else localStorage.removeItem(SYNC_URL_KEY);
+        } catch {}
       }
 
       function loadAuthor() {
@@ -1522,6 +1569,7 @@
       let pendingImport = [];
       let clearConfirmArmed = false;
       let clearConfirmTimer = null;
+      let lastPullAt = 0;
       const openCardForms = new Set();
 
       const navBadge = document.getElementById('nav-notes-count');
@@ -1533,10 +1581,81 @@
       const copyBtn = document.getElementById('notes-copy-btn');
       const shareBtn = document.getElementById('notes-share-btn');
       const clearBtn = document.getElementById('notes-clear-btn');
+      const refreshBtn = document.getElementById('notes-refresh-btn');
+      const configBtn = document.getElementById('notes-config-btn');
+      const configBar = document.getElementById('notes-config-bar');
+      const syncUrlInput = document.getElementById('notes-sync-url-input');
+      const disconnectBtn = document.getElementById('notes-sync-disconnect');
+      const syncPill = document.getElementById('notes-sync-pill');
+      const syncLabel = document.getElementById('notes-sync-label');
       const importBanner = document.getElementById('notes-import-banner');
       const importText = document.getElementById('notes-import-text');
       const importMergeBtn = document.getElementById('notes-import-merge');
       const importDismissBtn = document.getElementById('notes-import-dismiss');
+
+      function setSyncUi(state, text) {
+        if (syncPill) {
+          syncPill.classList.remove('is-ok', 'is-busy', 'is-err');
+          if (state === 'ok') syncPill.classList.add('is-ok');
+          else if (state === 'busy') syncPill.classList.add('is-busy');
+          else if (state === 'err') syncPill.classList.add('is-err');
+        }
+        if (syncLabel) syncLabel.textContent = text;
+        const hasUrl = Boolean(getSyncUrl());
+        const isHardcoded = Boolean(GDOC_SYNC_URL && GDOC_SYNC_URL.trim());
+        if (refreshBtn) refreshBtn.hidden = !hasUrl;
+        if (configBtn) configBtn.hidden = isHardcoded;
+        if (disconnectBtn) disconnectBtn.hidden = !hasUrl || isHardcoded;
+      }
+
+      async function pullFromGDoc(silent) {
+        const url = getSyncUrl();
+        if (!url) {
+          setSyncUi('idle', 'Mode local');
+          return;
+        }
+        lastPullAt = Date.now();
+        if (!silent) setSyncUi('busy', 'Synchronisation…');
+        try {
+          const sep = url.includes('?') ? '&' : '?';
+          const res = await fetch(`${url}${sep}action=list&t=${Date.now()}`, {
+            method: 'GET',
+            redirect: 'follow'
+          });
+          const data = await res.json();
+          if (!data || !data.ok) throw new Error((data && data.error) || 'Réponse invalide');
+          notes = normalizeNotesArray(data.notes);
+          saveNotes();
+          renderAllNotes();
+          setSyncUi('ok', 'Synchro GDoc active');
+        } catch (err) {
+          setSyncUi('err', 'Hors ligne (cache local)');
+        }
+      }
+
+      async function pushToGDoc(payload) {
+        const url = getSyncUrl();
+        if (!url) return;
+        setSyncUi('busy', 'Envoi vers GDoc…');
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (!data || !data.ok) throw new Error((data && data.error) || 'Erreur synchro');
+          if (Array.isArray(data.notes)) {
+            notes = normalizeNotesArray(data.notes);
+            saveNotes();
+            renderAllNotes();
+          }
+          setSyncUi('ok', 'Synchronisé dans le GDoc ✓');
+        } catch (err) {
+          setSyncUi('err', 'Erreur synchro (sauvé localement)');
+        }
+      }
 
       function setAuthor(val) {
         currentAuthor = val === 'Sarah' ? 'Sarah' : 'Alex';
@@ -1556,15 +1675,17 @@
       function addNote(scope, text) {
         const clean = (text || '').trim();
         if (!clean) return;
-        notes.push({
+        const note = {
           id: makeNoteId(),
           scope: SCOPE_BY_ID[scope] ? scope : 'general',
           author: currentAuthor,
           text: clean,
           createdAt: Date.now()
-        });
+        };
+        notes.push(note);
         saveNotes();
         renderAllNotes();
+        pushToGDoc({ action: 'add', id: note.id, scope: note.scope, author: note.author, text: note.text });
       }
 
       function deleteNote(id) {
@@ -1572,6 +1693,7 @@
         if (editingNoteId === id) editingNoteId = null;
         saveNotes();
         renderAllNotes();
+        pushToGDoc({ action: 'delete', id });
       }
 
       function updateNote(id, newText) {
@@ -1582,6 +1704,7 @@
         editingNoteId = null;
         saveNotes();
         renderAllNotes();
+        pushToGDoc({ action: 'update', id, text: clean });
       }
 
       function buildMarkdownRecap() {
@@ -1857,6 +1980,39 @@
         editingNoteId = null;
         saveNotes();
         renderAllNotes();
+        pushToGDoc({ action: 'clear' });
+      });
+
+      refreshBtn?.addEventListener('click', () => {
+        pullFromGDoc(false);
+      });
+
+      configBtn?.addEventListener('click', () => {
+        if (!configBar) return;
+        configBar.hidden = !configBar.hidden;
+        if (!configBar.hidden && syncUrlInput) {
+          syncUrlInput.value = getSyncUrl();
+          syncUrlInput.focus();
+        }
+      });
+
+      configBar?.addEventListener('submit', e => {
+        e.preventDefault();
+        const raw = (syncUrlInput?.value || '').trim();
+        if (!raw || !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec/.test(raw)) {
+          setSyncUi('err', 'URL Apps Script invalide');
+          return;
+        }
+        saveCustomSyncUrl(raw);
+        configBar.hidden = true;
+        pullFromGDoc(false);
+      });
+
+      disconnectBtn?.addEventListener('click', () => {
+        saveCustomSyncUrl('');
+        if (syncUrlInput) syncUrlInput.value = '';
+        if (configBar) configBar.hidden = true;
+        setSyncUi('idle', 'Mode local');
       });
 
       function checkHashImport() {
@@ -1881,12 +2037,18 @@
         document.getElementById('notes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
-      importMergeBtn?.addEventListener('click', () => {
+      importMergeBtn?.addEventListener('click', async () => {
         if (pendingImport.length) {
+          const toPush = pendingImport.slice();
           notes = notes.concat(pendingImport);
           pendingImport = [];
           saveNotes();
           renderAllNotes();
+          if (getSyncUrl()) {
+            for (const n of toPush) {
+              await pushToGDoc({ action: 'add', id: n.id, scope: n.scope, author: n.author, text: n.text });
+            }
+          }
         }
         if (importBanner) importBanner.hidden = true;
         try { history.replaceState(null, '', location.pathname + location.search + '#notes'); } catch {}
@@ -1899,8 +2061,15 @@
       });
 
       window.addEventListener('hashchange', checkHashImport);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && getSyncUrl() && Date.now() - lastPullAt > 15000) {
+          pullFromGDoc(true);
+        }
+      });
 
       renderAllNotes();
+      setSyncUi(getSyncUrl() ? 'busy' : 'idle', getSyncUrl() ? 'Synchronisation…' : 'Mode local');
+      if (getSyncUrl()) pullFromGDoc(false);
       checkHashImport();
     }
 
