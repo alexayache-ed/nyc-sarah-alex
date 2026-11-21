@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <style>
     .moma-brick {
       --m-bg: #FAF6F0;
@@ -170,6 +172,74 @@
     .site-footer { border-top: 2px solid var(--brick); padding-block: 2rem 2.75rem; background: var(--m-stone); }
     .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--m-ink-2); }
 
+    .day-card-head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+    .day-map-jump { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--m-ink-3); padding: 0.18rem 0.45rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-bg); white-space: nowrap; transition: all 160ms var(--ease); }
+    .day-map-jump:hover { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); }
+
+    .map-head-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+    .map-action-btn { font-family: var(--font-mono); font-size: 0.69rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.42rem 0.78rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); color: var(--m-ink-2); transition: all 150ms var(--ease); }
+    .map-action-btn:hover { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); }
+    .map-action-btn--primary { border-color: var(--brick); color: var(--brick); }
+    .map-action-btn--primary:hover { background: var(--brick); color: #FFFDF9; }
+
+    .map-filters { display: flex; flex-wrap: wrap; gap: 0.42rem; margin-bottom: 1.25rem; }
+    .map-pill { display: inline-flex; align-items: center; gap: 0.42rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.42rem 0.75rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); color: var(--m-ink-2); transition: all 150ms var(--ease); }
+    .map-pill:hover { border-color: var(--brick); color: var(--m-ink); }
+    .map-pill.is-active { background: var(--m-ink); border-color: var(--m-ink); color: #FFFDF9; }
+    .map-pill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.65); }
+    .map-pill-count { opacity: 0.68; font-size: 0.64rem; }
+
+    .map-shell { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(300px, 360px); border: 1px solid var(--m-rule); border-top: 3px solid var(--brick); border-radius: var(--radius); background: var(--m-surface); overflow: hidden; }
+    .map-stage { position: relative; min-height: 540px; background: #EFE9DF; }
+    #trip-map { width: 100%; height: 100%; min-height: 540px; z-index: 1; font-family: var(--font-body); }
+    #trip-map .leaflet-tile-pane { filter: sepia(0.08) saturate(0.95) contrast(1.01); }
+    #trip-map .leaflet-control-zoom { border: 1px solid var(--m-rule) !important; box-shadow: 0 2px 10px rgba(31,24,21,0.08) !important; border-radius: var(--radius) !important; overflow: hidden; }
+    #trip-map .leaflet-control-zoom a { background: var(--m-surface) !important; color: var(--m-ink) !important; border-bottom-color: var(--m-rule) !important; width: 30px !important; height: 30px !important; line-height: 30px !important; font-family: var(--font-mono); }
+    #trip-map .leaflet-control-zoom a:hover { background: var(--m-stone) !important; color: var(--brick) !important; }
+    #trip-map .leaflet-control-attribution { font-size: 10px; background: rgba(250,246,240,0.82) !important; color: var(--m-ink-3) !important; }
+
+    .trip-pin { background: none; border: none; }
+    .trip-pin-svg { display: block; filter: drop-shadow(0 2px 4px rgba(31,24,21,0.34)); transition: transform 160ms var(--ease); transform-origin: 50% 92%; }
+    .trip-pin:hover .trip-pin-svg, .trip-pin.is-active .trip-pin-svg { transform: scale(1.22); }
+
+    .leaflet-popup-content-wrapper { background: #FFFDF9 !important; color: #1F1815 !important; border: 1px solid #E3D8CC; border-radius: 3px !important; box-shadow: 0 10px 28px rgba(31,24,21,0.16) !important; padding: 0 !important; }
+    .leaflet-popup-tip { background: #FFFDF9 !important; border: 1px solid #E3D8CC; box-shadow: none !important; }
+    .leaflet-popup-content { margin: 0 !important; min-width: 245px; max-width: 290px; }
+    .leaflet-container a.leaflet-popup-close-button { color: #8A7A70 !important; top: 8px !important; right: 8px !important; font-size: 18px !important; }
+    .leaflet-container a.leaflet-popup-close-button:hover { color: #A83E2B !important; }
+    .pin-popup { padding: 0.95rem 1.05rem; font-family: var(--font-body); }
+    .pin-popup-eyebrow { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.09em; text-transform: uppercase; color: #8A7A70; margin-bottom: 0.3rem; }
+    .pin-popup-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .pin-popup-title { margin: 0; font-family: var(--font-display); font-size: 1.02rem; font-weight: 700; letter-spacing: -0.02em; color: #1F1815; line-height: 1.2; padding-right: 1rem; }
+    .pin-popup-addr { margin: 0.32rem 0 0; font-size: 0.8rem; color: #584B44; line-height: 1.4; }
+    .pin-popup-note { margin: 0.42rem 0 0; padding-top: 0.42rem; border-top: 1px solid #EFE7DC; font-family: var(--font-serif); font-style: italic; font-size: 0.86rem; color: #584B44; line-height: 1.4; }
+    .pin-popup-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.72rem; }
+    .pin-popup-btn { display: inline-flex; align-items: center; gap: 0.25rem; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.36rem 0.65rem; border-radius: 3px; border: 1px solid #A83E2B; background: #A83E2B; color: #FFFDF9 !important; transition: background 150ms ease; }
+    .pin-popup-btn:hover { background: #8C3120; }
+    .pin-popup-btn--ghost { background: #FFFDF9; color: #584B44 !important; border-color: #E3D8CC; }
+    .pin-popup-btn--ghost:hover { border-color: #A83E2B; color: #A83E2B !important; background: #F7EAE4; }
+
+    .map-sidebar { display: flex; flex-direction: column; border-left: 1px solid var(--m-rule); max-height: 540px; background: var(--m-surface); }
+    .map-sidebar-top { padding: 0.85rem 0.95rem; border-bottom: 1px solid var(--m-rule); background: var(--m-bg); }
+    .map-search { width: 100%; font-family: var(--font-body); font-size: 0.85rem; color: var(--m-ink); background: var(--m-surface); border: 1px solid var(--m-rule); border-radius: var(--radius); padding: 0.48rem 0.7rem; outline: none; transition: border-color 150ms var(--ease); }
+    .map-search:focus { border-color: var(--brick); }
+    .map-search::placeholder { color: var(--m-ink-3); }
+    .map-sidebar-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--m-ink-3); }
+
+    .pin-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; }
+    .pin-row { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 0.6rem; align-items: start; padding: 0.72rem 0.95rem; border-bottom: 1px solid #EFE7DC; cursor: pointer; transition: background 140ms var(--ease); }
+    .pin-row:hover { background: var(--m-bg); }
+    .pin-row.is-selected { background: var(--m-brick-soft); }
+    .pin-badge { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; color: #FFFDF9; margin-top: 0.1rem; flex-shrink: 0; }
+    .pin-row-name { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; color: var(--m-ink); line-height: 1.25; }
+    .pin-row-sub { margin-top: 0.16rem; font-size: 0.76rem; color: var(--m-ink-2); line-height: 1.35; }
+    .pin-row-tag { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--m-ink-3); margin-top: 0.16rem; }
+    .pin-row-maps { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--brick); padding: 0.24rem 0.48rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); white-space: nowrap; transition: all 140ms var(--ease); }
+    .pin-row-maps:hover { background: var(--brick); border-color: var(--brick); color: #FFFDF9; }
+    .pin-empty { padding: 2rem 1.2rem; text-align: center; font-size: 0.86rem; color: var(--m-ink-3); }
+
+    .map-legend-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.25rem; margin-top: 0.85rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--m-ink-3); }
+
     @media (max-width: 960px) {
       .days-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .days-grid.is-list .day-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -178,14 +248,18 @@
       .placard-cell:not(:first-child) { padding-left: 0; }
       .placard-cell:last-child { border-bottom: none; }
       .hero-names { text-align: left; }
+      .map-shell { grid-template-columns: 1fr; }
+      .map-stage, #trip-map { min-height: 410px; }
+      .map-sidebar { border-left: none; border-top: 1px solid var(--m-rule); max-height: 360px; }
     }
     @media (max-width: 640px) {
       .brand-meta, .view-toggle { display: none; }
-      .main-nav { gap: 1.1rem; }
+      .main-nav { gap: 0.9rem; font-size: 0.82rem; }
       .days-grid, .days-grid.is-list .day-slots { grid-template-columns: 1fr; }
       .hero-frame img { aspect-ratio: 16 / 10; }
       .booking-item { grid-template-columns: 22px minmax(0, 1fr); }
       .booking-link { grid-column: 2; justify-self: start; margin-top: 0.35rem; }
+      .map-stage, #trip-map { min-height: 360px; }
     }
   </style>
 </head>
@@ -200,8 +274,10 @@
         </a>
         <nav class="main-nav" aria-label="Navigation principale">
           <a href="#programme" class="nav-link">Programme</a>
+          <a href="#carte" class="nav-link">Carte</a>
           <a href="#reserver" class="nav-link">À réserver</a>
           <a href="#pratique" class="nav-link">Pratique</a>
+          <a href="#bons-plans" class="nav-link">Adresses</a>
         </nav>
       </div>
     </header>
@@ -359,6 +435,44 @@
         </div>
       </section>
 
+      <section class="section" id="carte">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="mono-label">Carte interactive · Pins Google Maps</span>
+              <h2 class="section-title">La Carte du séjour</h2>
+            </div>
+            <div class="map-head-actions">
+              <button type="button" class="map-action-btn" id="map-reset-btn">Recentrer</button>
+              <button type="button" class="map-action-btn map-action-btn--primary" id="map-kml-btn" title="Télécharger un fichier .kml à importer dans Google My Maps">Exporter .KML ↓</button>
+            </div>
+          </div>
+
+          <div class="map-filters" id="map-filters" role="group" aria-label="Filtrer les pins par jour ou catégorie"></div>
+
+          <div class="map-shell">
+            <div class="map-stage">
+              <div id="trip-map" role="region" aria-label="Carte interactive des adresses du voyage à New York"></div>
+            </div>
+            <aside class="map-sidebar" aria-label="Liste des adresses et pins">
+              <div class="map-sidebar-top">
+                <input type="search" class="map-search" id="map-search" placeholder="Filtrer par lieu, quartier, bar…" aria-label="Rechercher une adresse sur la carte" />
+                <div class="map-sidebar-meta">
+                  <span id="map-count">0 lieux</span>
+                  <span>Clic = zoom · ↗ = Google Maps</span>
+                </div>
+              </div>
+              <ul class="pin-list" id="pin-list"></ul>
+            </aside>
+          </div>
+
+          <div class="map-legend-bar">
+            <span>Sélectionne un jour pour afficher l’ordre des étapes et le tracé du parcours.</span>
+            <span>Chaque pin s’ouvre directement dans Google Maps (lieu + itinéraire métro depuis The Hollingsworth).</span>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="reserver">
         <div class="container">
           <div class="bottom-grid">
@@ -414,14 +528,14 @@
               <span class="mono-label">04 — Adresses</span>
               <h2 class="col-title">Restaurants, verres &amp; idées</h2>
               <dl class="info-list">
-                <div class="info-row"><dt>Resto / Bar</dt><dd>Bar Pisellino (chocolat chaud) - west village</dd></div>
-                <div class="info-row"><dt>Resto / Bar</dt><dd>Foursome (happy hour 4-6pm) - West village</dd></div>
-                <div class="info-row"><dt>Resto / Bar</dt><dd>Mariah holiday bar</dd></div>
-                <div class="info-row"><dt>Resto / Bar</dt><dd>Tre (Italien le jeudi 60$/personne - lower east side</dd></div>
-                <div class="info-row"><dt>Resto / Bar</dt><dd>Carnegie club (jazz club, Sinatra saturday</dd></div>
-                <div class="info-row"><dt>Resto / Bar</dt><dd>The taste of home (soupe médicinale chinoise)</dd></div>
-                <div class="info-row"><dt>Idée</dt><dd>bushwicks</dd></div>
-                <div class="info-row"><dt>Idée</dt><dd>old friends photobooth</dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>Bar Pisellino</strong> (chocolat chaud) — 52 Grove St, West Village · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=Bar+Pisellino+52+Grove+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>Foursome</strong> (happy hour 4–6pm) — 9 Jones St, West Village · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=Foursome+Restaurant+and+Bar+9+Jones+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>Mariah Carey&#x27;s Holiday Bar</strong> — Moxy NYC Chelsea, 105 W 28th St · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=Moxy+NYC+Chelsea+105+W+28th+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>Tre</strong> (Italien le jeudi, $60/pers) — 173 Ludlow St, Lower East Side · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=Tre+173+Ludlow+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>The Carnegie Club</strong> (jazz club, Sinatra Saturday) — 156 W 56th St, Midtown · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=The+Carnegie+Club+156+W+56th+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Resto / Bar</dt><dd><strong>The Taste of Home</strong> (soupe médicinale chinoise) — 43 Bayard St, Chinatown · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=The+Taste+of+Home+43+Bayard+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Idée</dt><dd><strong>Bushwick</strong> (Bushwick Collective &amp; friperies) — Troutman St &amp; St Nicholas Ave, Brooklyn · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=The+Bushwick+Collective+Troutman+St+Brooklyn" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
+                <div class="info-row"><dt>Idée</dt><dd><strong>Old Friend Photobooth</strong> (argentique vintage, $8) — 145 Allen St, Lower East Side · <a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=Old+Friend+Photobooth+145+Allen+St+New+York" target="_blank" rel="noopener noreferrer">Maps ↗</a></dd></div>
               </dl>
             </div>
             <div>
@@ -501,6 +615,399 @@
       btn.setAttribute('aria-pressed', isDone ? 'true' : 'false');
       saveChecked(checked);
     });
+
+    /* --- Interactive NYC Trip Map & Google Maps Pins --- */
+    const APARTMENT_ORIGIN = '70 W 37th St, New York, NY 10018';
+
+    const MAP_CATEGORIES = [
+      { id: 'all',      label: 'Tous',            color: '#1F1815', isDay: false },
+      { id: 'base',     label: 'Base',            color: '#1F1815', isDay: false },
+      { id: 'jeu-3',    label: 'Jeu 3',           color: '#A83E2B', isDay: true,  fullTitle: 'Jeu 3 déc · Midtown & Noël' },
+      { id: 'ven-4',    label: 'Ven 4',           color: '#2E4F3E', isDay: true,  fullTitle: 'Ven 4 déc · Central Park & musées' },
+      { id: 'sam-5',    label: 'Sam 5',           color: '#C48A2B', isDay: true,  fullTitle: 'Sam 5 déc · Brooklyn' },
+      { id: 'dim-6',    label: 'Dim 6',           color: '#5C4338', isDay: true,  fullTitle: 'Dim 6 déc · Harlem, Flatiron & SoHo' },
+      { id: 'lun-7',    label: 'Lun 7',           color: '#355C7D', isDay: true,  fullTitle: 'Lun 7 déc · Downtown & Dyker Heights' },
+      { id: 'mar-8',    label: 'Mar 8',           color: '#7B4B6A', isDay: true,  fullTitle: 'Mar 8 déc · Village, Chelsea & Top of the Rock' },
+      { id: 'adresses', label: 'Restos & idées',  color: '#C85A1E', isDay: false, fullTitle: 'Restaurants, verres & idées' }
+    ];
+
+    const CAT_BY_ID = Object.fromEntries(MAP_CATEGORIES.map(c => [c.id, c]));
+
+    const TRIP_PINS = [
+      // Base & Logistique
+      { id: 'hollingsworth', cat: 'base', step: '★', period: 'Base · Appartement', name: 'The Hollingsworth', address: '70 W 37th St, Midtown, NY 10018', lat: 40.7515, lng: -73.9866, note: 'Votre base pour tout le séjour (check-out mer 9 à 11h, bagages gardés).', query: 'The Hollingsworth 70 W 37th St New York NY', isHome: true },
+      { id: 'penn-station', cat: 'base', step: 'T', period: 'Base · Transfert JFK', name: 'Penn Station / Moynihan Train Hall', address: '421 8th Ave, Midtown, NY 10001', lat: 40.7506, lng: -73.9935, note: 'Arrivée mer 2 & départ mer 9 : AirTrain + LIRR ↔ JFK ($14/pers).', query: 'Moynihan Train Hall Penn Station New York NY' },
+
+      // Jeu 3 déc — Midtown & Noël
+      { id: 'bryant-park', cat: 'jeu-3', step: '1', period: 'Jeu 3 · Matin', name: 'Bryant Park', address: '42nd St & 6th Ave, NY 10018', lat: 40.7536, lng: -73.9832, note: 'Winter Village, chalets de Noël & patinoire — à 7 min à pied de l’appart.', query: 'Bryant Park New York NY' },
+      { id: 'grand-central', cat: 'jeu-3', step: '2', period: 'Jeu 3 · Matin', name: 'Grand Central Terminal', address: '89 E 42nd St, NY 10017', lat: 40.7527, lng: -73.9772, note: 'Hall principal, plafond étoilé & Whispering Gallery.', query: 'Grand Central Terminal 89 E 42nd St New York NY' },
+      { id: 'summit', cat: 'jeu-3', step: '3', period: 'Jeu 3 · Matin (10h)', name: 'SUMMIT One Vanderbilt', address: '45 E 42nd St, NY 10017', lat: 40.7530, lng: -73.9787, note: '10h · ~$46/pers (à réserver à l’avance).', query: 'SUMMIT One Vanderbilt 45 E 42nd St New York NY' },
+      { id: 'los-tacos', cat: 'jeu-3', step: '4', period: 'Jeu 3 · Midi', name: 'Los Tacos No. 1 (Grand Central)', address: '125 Park Ave, NY 10017', lat: 40.7516, lng: -73.9776, note: 'Juste en face de Grand Central & SUMMIT.', query: 'Los Tacos No. 1 125 Park Ave New York NY' },
+      { id: 'rockefeller', cat: 'jeu-3', step: '5', period: 'Jeu 3 · Après-midi & Soir', name: 'Rockefeller Center & Sapin', address: '45 Rockefeller Plaza, NY 10111', lat: 40.7587, lng: -73.9787, note: 'Balade sur 5th Avenue puis retour voir le sapin illuminé à la nuit tombée.', query: 'Rockefeller Center Christmas Tree 45 Rockefeller Plaza New York NY' },
+      { id: 'moma', cat: 'jeu-3', step: '6', period: 'Jeu 3 · Après-midi', name: 'MoMA (Museum of Modern Art)', address: '11 W 53rd St, NY 10019', lat: 40.7614, lng: -73.9776, note: '$5 à 2 avec badge Google (gratuit Alex + $5 invité au lobby).', query: 'Museum of Modern Art 11 W 53rd St New York NY' },
+      { id: 'times-square', cat: 'jeu-3', step: '7', period: 'Jeu 3 · Soir', name: 'Times Square', address: 'Broadway & 7th Ave, NY 10036', lat: 40.7580, lng: -73.9855, note: 'Passage de nuit entre le sapin et McGee’s Pub.', query: 'Times Square New York NY' },
+      { id: 'mcgees', cat: 'jeu-3', step: '8', period: 'Jeu 3 · Soir', name: 'McGee’s Pub', address: '240 W 55th St, NY 10019', lat: 40.7649, lng: -73.9834, note: 'Verre le soir — le pub qui a inspiré MacLaren’s dans How I Met Your Mother.', query: 'McGee\'s Pub 240 W 55th St New York NY' },
+
+      // Ven 4 déc — Central Park & musées
+      { id: 'amnh', cat: 'ven-4', step: '1', period: 'Ven 4 · Matin (10h)', name: 'Musée d’Histoire Naturelle (AMNH)', address: '200 Central Park West, NY 10024', lat: 40.7813, lng: -73.9740, note: '10h · $0 avec badge Google au Membership Desk (79th St ou Rose Center 81st St).', query: 'American Museum of Natural History 200 Central Park West New York NY' },
+      { id: 'zabars', cat: 'ven-4', step: '2', period: 'Ven 4 · Midi', name: 'Zabar’s', address: '2245 Broadway (80th St), NY 10024', lat: 40.7848, lng: -73.9796, note: 'Épicerie culte de l’Upper West Side (bagels, saumon, café).', query: 'Zabar\'s 2245 Broadway New York NY' },
+      { id: 'levain', cat: 'ven-4', step: '3', period: 'Ven 4 · Midi', name: 'Levain Bakery (Original 74th St)', address: '167 W 74th St, NY 10023', lat: 40.7799, lng: -73.9803, note: 'Cookies iconiques (2e boutique UWS aussi au 351 Amsterdam Ave).', query: 'Levain Bakery 167 W 74th St New York NY' },
+      { id: 'empire-hotel', cat: 'ven-4', step: '4', period: 'Ven 4 · Après-midi', name: 'The Empire Hotel', address: '44 W 63rd St, NY 10023', lat: 40.7715, lng: -73.9828, note: 'Enseigne rouge culte face au Lincoln Center.', query: 'The Empire Hotel 44 W 63rd St New York NY' },
+      { id: 'central-park', cat: 'ven-4', step: '5', period: 'Ven 4 · Après-midi', name: 'Central Park · Cherry Hill & Bethesda', address: 'Bethesda Terrace, Central Park, NY', lat: 40.7738, lng: -73.9708, note: 'Traversée par Cherry Hill, Bow Bridge et Bethesda Fountain vers l’Est.', query: 'Bethesda Terrace Central Park New York NY' },
+      { id: 'the-met', cat: 'ven-4', step: '6', period: 'Ven 4 · Soir (jusqu’à 21h)', name: 'The Met (Metropolitan Museum)', address: '1000 5th Ave, NY 10028', lat: 40.7794, lng: -73.9632, note: 'Nocturne vendredi jusqu’à 21h · $0 avec justificatif Google + pièce d’identité.', query: 'The Metropolitan Museum of Art 1000 5th Ave New York NY' },
+
+      // Sam 5 déc — Brooklyn
+      { id: 'williamsburg', cat: 'sam-5', step: '1', period: 'Sam 5 · Matin', name: 'Williamsburg · Bedford Ave', address: 'Bedford Ave & N 7th St, Brooklyn, NY 11249', lat: 40.7171, lng: -73.9570, note: 'Arrivée métro L (Bedford Ave), cafés, friperies et balade.', query: 'Bedford Ave & N 7th St Brooklyn NY' },
+      { id: 'domino-park', cat: 'sam-5', step: '2', period: 'Sam 5 · Matin', name: 'Domino Park', address: '15 River St, Brooklyn, NY 11249', lat: 40.7152, lng: -73.9675, note: 'Promenade au bord de l’East River face à la skyline de Manhattan.', query: 'Domino Park 15 River St Brooklyn NY' },
+      { id: 'lindustrie', cat: 'sam-5', step: '3', period: 'Sam 5 · Midi', name: 'L’Industrie Pizzeria', address: '254 S 2nd St, Brooklyn, NY 11211', lat: 40.7116, lng: -73.9578, note: 'Part ~$5 — tester la burrata slice.', query: 'L\'Industrie Pizzeria 254 S 2nd St Brooklyn NY' },
+      { id: 'ferry-dumbo', cat: 'sam-5', step: '4', period: 'Sam 5 · Après-midi', name: 'NYC Ferry → DUMBO (Fulton Ferry)', address: 'Fulton Ferry Landing, Brooklyn, NY 11201', lat: 40.7031, lng: -73.9958, note: 'Ferry $4,50 depuis South Williamsburg — vue skyline imbattable.', query: 'DUMBO Fulton Ferry Landing Brooklyn NY' },
+      { id: 'dumbo-washington', cat: 'sam-5', step: '5', period: 'Sam 5 · Après-midi', name: 'DUMBO · Washington St', address: 'Washington St & Water St, Brooklyn, NY 11201', lat: 40.7033, lng: -73.9895, note: 'Point de vue classique encadrant le Manhattan Bridge et l’Empire State.', query: 'Washington St & Water St DUMBO Brooklyn NY' },
+      { id: 'brooklyn-bridge', cat: 'sam-5', step: '6', period: 'Sam 5 · Soir (16h)', name: 'Pont de Brooklyn (Entrée piétonne)', address: 'Washington St & Tillary St, Brooklyn, NY 11201', lat: 40.7006, lng: -73.9901, note: 'Traversée vers Manhattan au coucher du soleil (~16h).', query: 'Brooklyn Bridge Pedestrian Walkway Entrance Brooklyn NY' },
+
+      // Dim 6 déc — Harlem, Flatiron & SoHo
+      { id: 'harlem-gospel', cat: 'dim-6', step: '1', period: 'Dim 6 · Matin', name: 'Harlem · Messe gospel', address: '1912 Adam Clayton Powell Jr Blvd, Harlem, NY', lat: 40.8034, lng: -73.9522, note: 'Ex. First Corinthian Baptist Church (arriver 30 min avant, entrée libre).', query: 'First Corinthian Baptist Church 1912 Adam Clayton Powell Jr Blvd New York NY' },
+      { id: 'sylvias', cat: 'dim-6', step: '2', period: 'Dim 6 · Midi', name: 'Sylvia’s Restaurant', address: '328 Malcolm X Blvd, Harlem, NY 10027', lat: 40.8086, lng: -73.9447, note: 'Institution du brunch soul food à Harlem.', query: 'Sylvia\'s Restaurant 328 Malcolm X Blvd New York NY' },
+      { id: 'flatiron', cat: 'dim-6', step: '3', period: 'Dim 6 · Après-midi', name: 'Flatiron Building', address: '175 5th Ave, NY 10010', lat: 40.7411, lng: -73.9897, note: 'Madison Square Park & architecture triangulaire.', query: 'Flatiron Building 175 5th Ave New York NY' },
+      { id: 'soho-greene', cat: 'dim-6', step: '4', period: 'Dim 6 · Après-midi', name: 'SoHo · Greene St', address: 'Greene St & Broome St, NY 10013', lat: 40.7224, lng: -74.0005, note: 'Plus belles façades cast-iron & shopping.', query: 'Greene St & Broome St SoHo New York NY' },
+      { id: 'chinatown-doyers', cat: 'dim-6', step: '5', period: 'Dim 6 · Soir', name: 'Chinatown · Doyers St', address: 'Doyers St, Chinatown, NY 10013', lat: 40.7145, lng: -73.9981, note: 'Ruelle courbe mythique, dumplings (prévoir du cash).', query: 'Doyers St Chinatown New York NY' },
+
+      // Lun 7 déc — Downtown & Dyker Heights
+      { id: 'battery-park', cat: 'lun-7', step: '1', period: 'Lun 7 · Matin (9h)', name: 'Battery Park · Départ Ellis Island', address: 'Castle Clinton, Battery Park, NY 10004', lat: 40.7036, lng: -74.0169, note: 'Embarquement Statue City Cruises (9h · $26/pers · billet officiel).', query: 'Castle Clinton National Monument Battery Park New York NY' },
+      { id: 'ellis-island', cat: 'lun-7', step: '2', period: 'Lun 7 · Matin', name: 'Ellis Island', address: 'Ellis Island National Museum, NY 10004', lat: 40.6995, lng: -74.0396, note: 'Statue de la Liberté + Musée de l’Immigration.', query: 'Ellis Island National Museum of Immigration New York NY' },
+      { id: 'google-st-johns', cat: 'lun-7', step: '3', period: 'Lun 7 · Midi', name: 'Google · St. John’s Terminal', address: '550 Washington St, NY 10014', lat: 40.7286, lng: -74.0102, note: 'Déj Google ($0 · go/guest · passeport physique obligatoire). Café vue Hudson à Eventide.', query: 'Google St. John\'s Terminal 550 Washington St New York NY' },
+      { id: 'memorial-911', cat: 'lun-7', step: '4', period: 'Lun 7 · Après-midi', name: 'Mémorial du 11 Septembre', address: '180 Greenwich St, NY 10007', lat: 40.7115, lng: -74.0132, note: 'Bassins extérieurs gratuits ($0) & Oculus juste à côté.', query: '9/11 Memorial 180 Greenwich St New York NY' },
+      { id: 'wall-street', cat: 'lun-7', step: '5', period: 'Lun 7 · Après-midi', name: 'Wall Street & Charging Bull', address: '26 Broadway / Bowling Green, NY 10004', lat: 40.7056, lng: -74.0134, note: 'Taureau de Wall Street, Stock Exchange & Trinity Church.', query: 'Charging Bull Bowling Green New York NY' },
+      { id: 'dyker-heights', cat: 'lun-7', step: '6', period: 'Lun 7 · Soir', name: 'Dyker Heights · Illuminations', address: '84th St & 12th Ave, Brooklyn, NY 11228', lat: 40.6186, lng: -74.0110, note: 'Maisons illuminées de Noël (11e–13e Ave, 83e–86e St · métro D jusqu’à 79th St).', query: 'Dyker Heights Christmas Lights 84th St & 12th Ave Brooklyn NY' },
+
+      // Mar 8 déc — Village, Chelsea & Top of the Rock
+      { id: 'friends-apt', cat: 'mar-8', step: '1', period: 'Mar 8 · Matin', name: 'Immeuble de Friends', address: '90 Bedford St, West Village, NY 10014', lat: 40.7324, lng: -74.0053, note: 'Coin Bedford St & Grove St, au cœur du West Village.', query: 'Friends Apartment 90 Bedford St New York NY' },
+      { id: 'high-line', cat: 'mar-8', step: '2', period: 'Mar 8 · Matin', name: 'The High Line (Entrée Sud)', address: 'Gansevoort St & Washington St, NY 10014', lat: 40.7396, lng: -74.0082, note: 'Promenade végétalisée suspendue vers Chelsea.', query: 'The High Line Gansevoort St Entrance New York NY' },
+      { id: 'google-chelsea', cat: 'mar-8', step: '3', period: 'Mar 8 · Midi', name: 'Google · Chelsea', address: '111 8th Ave, NY 10011', lat: 40.7414, lng: -74.0029, note: 'Déj Google ($0 · go/guest · passeport physique). Café en terrasse au Panorama.', query: 'Google NYC 111 8th Ave New York NY' },
+      { id: 'pier-57', cat: 'mar-8', step: '4', period: 'Mar 8 · Midi', name: 'Pier 57 Rooftop Park', address: '25 11th Ave (W 15th St), NY 10011', lat: 40.7430, lng: -74.0101, note: 'Rooftop public gratuit sur l’Hudson + Esplanade Cafe Google.', query: 'Pier 57 Rooftop Park 25 11th Ave New York NY' },
+      { id: 'chelsea-market', cat: 'mar-8', step: '5', period: 'Mar 8 · Après-midi', name: 'Chelsea Market', address: '75 9th Ave, NY 10011', lat: 40.7424, lng: -74.0061, note: 'Halle gourmande et boutiques juste en face de Google Chelsea.', query: 'Chelsea Market 75 9th Ave New York NY' },
+      { id: 'top-of-the-rock', cat: 'mar-8', step: '6', period: 'Mar 8 · Après-midi (15h45)', name: 'Top of the Rock', address: '30 Rockefeller Plaza, NY 10112', lat: 40.7593, lng: -73.9794, note: '15h45 · ~$58/pers — créneau coucher du soleil (à réserver tôt).', query: 'Top of the Rock 30 Rockefeller Plaza New York NY' },
+      { id: 'le-bain', cat: 'mar-8', step: '7', period: 'Mar 8 · Soir', name: 'Le Bain (The Standard, High Line)', address: '848 Washington St, NY 10014', lat: 40.7408, lng: -74.0080, note: 'Verre panoramique après le dîner dans le West Village.', query: 'Le Bain at The Standard High Line 848 Washington St New York NY' },
+
+      // Section 04 — Restaurants, verres & idées
+      { id: 'bar-pisellino', cat: 'adresses', step: '✦', period: 'Resto / Bar · West Village', name: 'Bar Pisellino', address: '52 Grove St, NY 10014', lat: 40.7332, lng: -74.0033, note: 'Chocolat chaud & café-bar italien (juste à côté de l’immeuble de Friends).', query: 'Bar Pisellino 52 Grove St New York NY' },
+      { id: 'foursome', cat: 'adresses', step: '✦', period: 'Resto / Bar · West Village', name: 'Foursome Restaurant & Bar', address: '9 Jones St, NY 10014', lat: 40.7323, lng: -74.0022, note: 'Happy hour lun–ven 16h–18h (verres à $6).', query: 'Foursome Restaurant and Bar 9 Jones St New York NY' },
+      { id: 'mariah-holiday-bar', cat: 'adresses', step: '✦', period: 'Resto / Bar · Chelsea', name: 'Mariah Carey’s Holiday Bar', address: 'Moxy NYC Chelsea, 105 W 28th St, NY 10001', lat: 40.7463, lng: -73.9912, note: 'Pop-up bar de Noël — à 10 min à pied de l’appartement.', query: 'Moxy NYC Chelsea 105 W 28th St New York NY' },
+      { id: 'tre-les', cat: 'adresses', step: '✦', period: 'Resto / Bar · Lower East Side', name: 'Tre', address: '173 Ludlow St, NY 10002', lat: 40.7217, lng: -73.9877, note: 'Italien cosy dans le Lower East Side (formule jeudi $60/pers).', query: 'Tre 173 Ludlow St New York NY' },
+      { id: 'carnegie-club', cat: 'adresses', step: '✦', period: 'Resto / Bar · Midtown', name: 'The Carnegie Club', address: '156 W 56th St, NY 10019', lat: 40.7646, lng: -73.9800, note: 'Club de jazz & Sinatra Saturday (pensez à réserver).', query: 'The Carnegie Club 156 W 56th St New York NY' },
+      { id: 'taste-of-home', cat: 'adresses', step: '✦', period: 'Resto / Bar · Chinatown', name: 'The Taste of Home', address: '43 Bayard St, Chinatown, NY 10013', lat: 40.7156, lng: -73.9985, note: 'Soupes médicinales cantonaises (fermé le jeudi, ouvert 10h30–19h30).', query: 'The Taste of Home 43 Bayard St New York NY' },
+      { id: 'bushwick', cat: 'adresses', step: '✦', period: 'Idée · Brooklyn', name: 'Bushwick (Bushwick Collective)', address: 'Troutman St & St Nicholas Ave, Brooklyn, NY 11237', lat: 40.7069, lng: -73.9225, note: 'Street art, friperies et bars alternatifs (métro L arrêt Jefferson St).', query: 'The Bushwick Collective Troutman St Brooklyn NY' },
+      { id: 'old-friend-photobooth', cat: 'adresses', step: '✦', period: 'Idée · Lower East Side', name: 'Old Friend Photobooth', address: '145 Allen St, NY 10002', lat: 40.7204, lng: -73.9896, note: 'Photomaton argentique vintage noir & blanc ($8 la bande de 4 poses).', query: 'Old Friend Photobooth 145 Allen St New York NY' }
+    ];
+
+    function gmapsSearchUrl(pin) {
+      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(pin.query || (pin.name + ' ' + pin.address));
+    }
+
+    function gmapsDirUrl(pin) {
+      return 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(APARTMENT_ORIGIN) + '&destination=' + encodeURIComponent(pin.query || pin.address) + '&travelmode=transit';
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
+    }
+
+    function escapeXml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[s]));
+    }
+
+    let activeMapCat = 'all';
+    let mapSearchQuery = '';
+    let selectedPinId = null;
+    let leafletMap = null;
+    let markersLayer = null;
+    let routeLayer = null;
+    const markersById = new Map();
+
+    function makePinIcon(pin, isActive) {
+      const cat = CAT_BY_ID[pin.cat] || MAP_CATEGORIES[0];
+      const stroke = isActive ? '#1F1815' : '#FFFDF9';
+      const sw = isActive ? '2.2' : '1.7';
+      const svg = `
+        <svg class="trip-pin-svg" width="30" height="38" viewBox="0 0 30 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15 2C8.1 2 2.5 7.6 2.5 14.5C2.5 23.4 15 36 15 36C15 36 27.5 23.4 27.5 14.5C27.5 7.6 21.9 2 15 2Z" fill="${cat.color}" stroke="${stroke}" stroke-width="${sw}"/>
+          <text x="15" y="18.3" text-anchor="middle" fill="#FFFDF9" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="600">${escapeHtml(pin.step)}</text>
+        </svg>`;
+      return L.divIcon({
+        className: 'trip-pin' + (isActive ? ' is-active' : ''),
+        html: svg,
+        iconSize: [30, 38],
+        iconAnchor: [15, 36],
+        popupAnchor: [0, -34]
+      });
+    }
+
+    function buildPopupHtml(pin) {
+      const cat = CAT_BY_ID[pin.cat] || MAP_CATEGORIES[0];
+      const dirBtn = pin.isHome ? '' : `<a class="pin-popup-btn pin-popup-btn--ghost" href="${gmapsDirUrl(pin)}" target="_blank" rel="noopener noreferrer">Itinéraire ↗</a>`;
+      return `
+        <div class="pin-popup">
+          <div class="pin-popup-eyebrow"><span class="pin-popup-dot" style="background:${cat.color}"></span>${escapeHtml(pin.period)}</div>
+          <h3 class="pin-popup-title">${escapeHtml(pin.name)}</h3>
+          <p class="pin-popup-addr">${escapeHtml(pin.address)}</p>
+          ${pin.note ? `<p class="pin-popup-note">${escapeHtml(pin.note)}</p>` : ''}
+          <div class="pin-popup-actions">
+            <a class="pin-popup-btn" href="${gmapsSearchUrl(pin)}" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+            ${dirBtn}
+          </div>
+        </div>`;
+    }
+
+    function getFilteredPins() {
+      const q = mapSearchQuery.trim().toLowerCase();
+      return TRIP_PINS.filter(pin => {
+        if (activeMapCat !== 'all' && pin.cat !== activeMapCat) return false;
+        if (!q) return true;
+        const haystack = (pin.name + ' ' + pin.address + ' ' + pin.period + ' ' + pin.note).toLowerCase();
+        return haystack.includes(q);
+      });
+    }
+
+    function renderFilterPills() {
+      const container = document.getElementById('map-filters');
+      if (!container) return;
+      container.innerHTML = MAP_CATEGORIES.map(cat => {
+        const count = cat.id === 'all' ? TRIP_PINS.length : TRIP_PINS.filter(p => p.cat === cat.id).length;
+        const dot = cat.id === 'all' ? '' : `<span class="map-pill-dot" style="background:${cat.color}"></span>`;
+        return `<button type="button" class="map-pill${cat.id === activeMapCat ? ' is-active' : ''}" data-map-cat="${cat.id}">${dot}${escapeHtml(cat.label)} <span class="map-pill-count">${count}</span></button>`;
+      }).join('');
+    }
+
+    function fitVisiblePins(pins) {
+      if (!leafletMap || !pins.length) return;
+      if (pins.length === 1) {
+        leafletMap.setView([pins[0].lat, pins[0].lng], 15, { animate: true });
+        return;
+      }
+      const bounds = L.latLngBounds(pins.map(p => [p.lat, p.lng]));
+      leafletMap.fitBounds(bounds, { padding: [36, 36], maxZoom: 15, animate: true });
+    }
+
+    function highlightPin(pinId, options = {}) {
+      selectedPinId = pinId;
+      document.querySelectorAll('#pin-list .pin-row').forEach(row => {
+        const isMatch = row.getAttribute('data-pin-id') === pinId;
+        row.classList.toggle('is-selected', isMatch);
+        if (isMatch && options.scrollList) {
+          row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      });
+      markersById.forEach((marker, id) => {
+        const pin = TRIP_PINS.find(p => p.id === id);
+        if (!pin) return;
+        marker.setIcon(makePinIcon(pin, id === pinId));
+        marker.setZIndexOffset(id === pinId ? 1000 : (pin.isHome ? 500 : 0));
+      });
+      if (options.focusMap && leafletMap && markersById.has(pinId)) {
+        const pin = TRIP_PINS.find(p => p.id === pinId);
+        const marker = markersById.get(pinId);
+        leafletMap.flyTo([pin.lat, pin.lng], Math.max(leafletMap.getZoom(), 15), { duration: 0.55 });
+        marker.openPopup();
+      }
+    }
+
+    function renderMapAndList(shouldFit) {
+      const pins = getFilteredPins();
+      const countEl = document.getElementById('map-count');
+      const listEl = document.getElementById('pin-list');
+      if (countEl) {
+        countEl.textContent = pins.length + (pins.length > 1 ? ' lieux affichés' : ' lieu affiché');
+      }
+
+      if (listEl) {
+        if (!pins.length) {
+          listEl.innerHTML = '<li class="pin-empty">Aucun lieu ne correspond à cette recherche.</li>';
+        } else {
+          listEl.innerHTML = pins.map(pin => {
+            const cat = CAT_BY_ID[pin.cat] || MAP_CATEGORIES[0];
+            return `
+              <li class="pin-row${pin.id === selectedPinId ? ' is-selected' : ''}" data-pin-id="${pin.id}" tabindex="0">
+                <span class="pin-badge" style="background:${cat.color}">${escapeHtml(pin.step)}</span>
+                <div>
+                  <div class="pin-row-name">${escapeHtml(pin.name)}</div>
+                  <div class="pin-row-sub">${escapeHtml(pin.address)}</div>
+                  <div class="pin-row-tag">${escapeHtml(pin.period)}</div>
+                </div>
+                <a class="pin-row-maps" href="${gmapsSearchUrl(pin)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="Ouvrir ${escapeHtml(pin.name)} dans Google Maps">Maps ↗</a>
+              </li>`;
+          }).join('');
+        }
+      }
+
+      if (!leafletMap || !markersLayer || !routeLayer) return;
+
+      markersLayer.clearLayers();
+      routeLayer.clearLayers();
+      markersById.clear();
+
+      pins.forEach(pin => {
+        const marker = L.marker([pin.lat, pin.lng], {
+          icon: makePinIcon(pin, pin.id === selectedPinId),
+          zIndexOffset: pin.isHome ? 500 : 0
+        });
+        marker.bindPopup(buildPopupHtml(pin), { maxWidth: 295, autoPanPadding: [28, 28] });
+        marker.on('click', () => highlightPin(pin.id, { scrollList: true }));
+        marker.addTo(markersLayer);
+        markersById.set(pin.id, marker);
+      });
+
+      const activeCatObj = CAT_BY_ID[activeMapCat];
+      if (activeCatObj && activeCatObj.isDay && !mapSearchQuery.trim() && pins.length > 1) {
+        L.polyline(pins.map(p => [p.lat, p.lng]), {
+          color: activeCatObj.color,
+          weight: 2.5,
+          opacity: 0.72,
+          dashArray: '5, 7'
+        }).addTo(routeLayer);
+      }
+
+      if (shouldFit) fitVisiblePins(pins);
+    }
+
+    function focusCategory(catId, scrollToMap) {
+      activeMapCat = CAT_BY_ID[catId] ? catId : 'all';
+      mapSearchQuery = '';
+      selectedPinId = null;
+      const searchInput = document.getElementById('map-search');
+      if (searchInput) searchInput.value = '';
+      renderFilterPills();
+      renderMapAndList(true);
+      if (scrollToMap) {
+        const section = document.getElementById('carte');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function downloadTripKml() {
+      const hexToKmlColor = hex => {
+        const clean = hex.replace('#', '');
+        const r = clean.slice(0, 2), g = clean.slice(2, 4), b = clean.slice(4, 6);
+        return 'ff' + b + g + r;
+      };
+      const cats = MAP_CATEGORIES.filter(c => c.id !== 'all');
+      const styles = cats.map(c => `
+    <Style id="style-${c.id}">
+      <IconStyle>
+        <color>${hexToKmlColor(c.color)}</color>
+        <scale>1.05</scale>
+        <Icon><href>https://maps.google.com/mapfiles/kml/paddle/wht-blank.png</href></Icon>
+      </IconStyle>
+    </Style>`).join('');
+
+      const folders = cats.map(c => {
+        const items = TRIP_PINS.filter(p => p.cat === c.id);
+        if (!items.length) return '';
+        const placemarks = items.map(p => `
+      <Placemark>
+        <name>${escapeXml(p.name)}</name>
+        <description>${escapeXml(p.period + ' — ' + p.address + (p.note ? '\n' + p.note : ''))}</description>
+        <styleUrl>#style-${c.id}</styleUrl>
+        <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>
+      </Placemark>`).join('');
+        return `
+    <Folder>
+      <name>${escapeXml(c.fullTitle || c.label)}</name>${placemarks}
+    </Folder>`;
+      }).join('');
+
+      const kml = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>New York · 2 → 9 décembre — Alexandre &amp; Sarah</name>
+    <description>Toutes les adresses du séjour à New York, classées par jour et catégorie.</description>${styles}${folders}
+  </Document>
+</kml>`;
+
+      const blob = new Blob([kml], { type: 'application/vnd.google-earth.kml+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'nyc-sarah-alex-pins.kml';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function initTripMap() {
+      renderFilterPills();
+
+      const mapEl = document.getElementById('trip-map');
+      if (typeof window.L !== 'undefined' && mapEl) {
+        leafletMap = L.map('trip-map', {
+          center: [40.742, -73.986],
+          zoom: 12,
+          scrollWheelZoom: false
+        });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; OpenStreetMap &copy; CARTO',
+          subdomains: 'abcd',
+          maxZoom: 19
+        }).addTo(leafletMap);
+        routeLayer = L.layerGroup().addTo(leafletMap);
+        markersLayer = L.layerGroup().addTo(leafletMap);
+      } else if (mapEl) {
+        mapEl.innerHTML = '<div class="pin-empty" style="padding:3rem 1.5rem;">Carte hors ligne — utilisez la liste ci-contre pour ouvrir chaque pin directement dans Google Maps.</div>';
+      }
+
+      renderMapAndList(true);
+
+      document.getElementById('map-filters')?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-map-cat]');
+        if (!btn) return;
+        focusCategory(btn.getAttribute('data-map-cat'), false);
+      });
+
+      document.getElementById('map-search')?.addEventListener('input', e => {
+        mapSearchQuery = e.target.value || '';
+        renderMapAndList(false);
+      });
+
+      document.getElementById('pin-list')?.addEventListener('click', e => {
+        const row = e.target.closest('[data-pin-id]');
+        if (!row) return;
+        highlightPin(row.getAttribute('data-pin-id'), { focusMap: true });
+      });
+
+      document.getElementById('pin-list')?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const row = e.target.closest('[data-pin-id]');
+        if (!row) return;
+        e.preventDefault();
+        highlightPin(row.getAttribute('data-pin-id'), { focusMap: true });
+      });
+
+      document.getElementById('map-reset-btn')?.addEventListener('click', () => {
+        fitVisiblePins(getFilteredPins());
+      });
+
+      document.getElementById('map-kml-btn')?.addEventListener('click', downloadTripKml);
+
+      // Add "Voir les pins ↓" jump buttons to each day card header (resilient to doc syncs)
+      document.querySelectorAll('[data-day-card]').forEach(card => {
+        const dayId = card.getAttribute('data-day-card');
+        const head = card.querySelector('.day-card-head');
+        const dateEl = head?.querySelector('.day-card-date');
+        if (!head || !dateEl || head.querySelector('.day-map-jump')) return;
+        const row = document.createElement('div');
+        row.className = 'day-card-head-row';
+        dateEl.parentNode.insertBefore(row, dateEl);
+        row.appendChild(dateEl);
+        const jumpBtn = document.createElement('button');
+        jumpBtn.type = 'button';
+        jumpBtn.className = 'day-map-jump';
+        jumpBtn.textContent = 'Pins ↓';
+        jumpBtn.setAttribute('aria-label', 'Voir les pins de cette journée sur la carte');
+        jumpBtn.addEventListener('click', () => focusCategory(dayId, true));
+        row.appendChild(jumpBtn);
+      });
+    }
+
+    initTripMap();
   </script>
 </body>
 </html>
