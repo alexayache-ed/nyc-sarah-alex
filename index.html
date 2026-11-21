@@ -169,12 +169,68 @@
     .info-row dd { margin: 0; font-size: 0.92rem; color: var(--m-ink-2); line-height: 1.5; }
     .info-row dd strong { color: var(--m-ink); font-weight: 600; }
 
+    .day-gallery { margin-top: 1.5rem; padding-top: 1.35rem; border-top: 1px solid var(--m-rule); animation: galleryReveal 260ms var(--ease); --gallery-accent: var(--brick); }
+    .day-gallery[hidden] { display: none; }
+    .day-gallery--pine { --gallery-accent: var(--pine); }
+    .day-gallery--ochre { --gallery-accent: #9A6818; }
+    .day-gallery--brownstone { --gallery-accent: var(--brownstone); }
+    @keyframes galleryReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .gallery-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.65rem 1.25rem; margin-bottom: 1.15rem; }
+    .gallery-head-left { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem 0.9rem; }
+    .gallery-kicker { font-family: var(--font-mono); font-size: 0.69rem; font-weight: 500; letter-spacing: 0.11em; text-transform: uppercase; color: var(--gallery-accent); display: inline-flex; align-items: center; gap: 0.45rem; }
+    .gallery-kicker::before { content: ''; width: 8px; height: 8px; background: var(--gallery-accent); border-radius: 1px; display: inline-block; }
+    .gallery-count { font-size: 0.84rem; color: var(--m-ink-3); }
+    .gallery-route-link { font-family: var(--font-mono); font-size: 0.69rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.36rem 0.72rem; border: 1px solid var(--m-rule); border-radius: var(--radius); color: var(--m-ink-2); background: var(--m-surface); transition: all 160ms var(--ease); }
+    .gallery-route-link:hover { border-color: var(--gallery-accent); color: var(--gallery-accent); }
+
+    .places-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.15rem; }
+    .places-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .place-card { display: flex; flex-direction: column; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); overflow: hidden; transition: border-color 180ms var(--ease), transform 220ms var(--ease), box-shadow 220ms var(--ease); }
+    .place-card:hover { border-color: #CBBBA9; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(31, 24, 21, 0.06); }
+    .place-photo-btn { display: block; width: 100%; padding: 0; position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: var(--m-stone); text-align: left; }
+    .place-photo-btn img { width: 100%; height: 100%; object-fit: cover; transition: transform 420ms var(--ease); }
+    .place-card:hover .place-photo-btn img { transform: scale(1.045); }
+    .place-period { position: absolute; top: 0.6rem; left: 0.6rem; padding: 0.22rem 0.5rem; border-radius: 2px; background: rgba(31, 24, 21, 0.78); backdrop-filter: blur(6px); font-family: var(--font-mono); font-size: 0.61rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFDF9; line-height: 1.25; }
+    .place-zoom-hint { position: absolute; bottom: 0.55rem; right: 0.55rem; width: 26px; height: 26px; border-radius: 2px; background: rgba(255, 253, 249, 0.9); color: var(--m-ink); display: inline-flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(3px); transition: opacity 180ms var(--ease), transform 180ms var(--ease); }
+    .place-card:hover .place-zoom-hint, .place-photo-btn:focus-visible .place-zoom-hint { opacity: 1; transform: translateY(0); }
+    .place-zoom-hint svg { width: 13px; height: 13px; }
+
+    .place-body { padding: 0.8rem 0.9rem 0.85rem; display: flex; flex-direction: column; flex: 1; gap: 0.2rem; }
+    .place-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; color: var(--m-ink); }
+    .place-meta { font-size: 0.79rem; color: var(--m-ink-3); line-height: 1.4; }
+    .place-foot { margin-top: auto; padding-top: 0.55rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .place-maps-link { display: inline-flex; align-items: center; gap: 0.32rem; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gallery-accent); border-bottom: 1px solid transparent; padding-bottom: 1px; transition: border-color 160ms var(--ease), opacity 160ms var(--ease); }
+    .place-maps-link:hover { border-color: var(--gallery-accent); }
+    .place-maps-link svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+    .lightbox { position: fixed; inset: 0; z-index: 120; background: rgba(24, 18, 15, 0.86); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: clamp(1rem, 3vw, 2.5rem); opacity: 0; pointer-events: none; transition: opacity 200ms var(--ease); }
+    .lightbox.is-open { opacity: 1; pointer-events: auto; }
+    .lightbox-panel { width: min(880px, 100%); background: var(--m-surface); border: 1px solid var(--m-rule); border-radius: var(--radius); overflow: hidden; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42); transform: translateY(8px); transition: transform 220ms var(--ease); }
+    .lightbox.is-open .lightbox-panel { transform: translateY(0); }
+    .lightbox-media { position: relative; background: #14100E; aspect-ratio: 3 / 2; max-height: 68vh; display: flex; align-items: center; justify-content: center; }
+    .lightbox-media img { width: 100%; height: 100%; object-fit: cover; }
+    .lightbox-close { position: absolute; top: 0.75rem; right: 0.75rem; width: 34px; height: 34px; border-radius: var(--radius); background: rgba(31, 24, 21, 0.78); color: #FFFDF9; display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; line-height: 1; transition: background 150ms var(--ease); }
+    .lightbox-close:hover { background: var(--brick); }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: var(--radius); background: rgba(31, 24, 21, 0.72); color: #FFFDF9; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: background 150ms var(--ease); }
+    .lightbox-nav:hover { background: var(--brick); }
+    .lightbox-nav--prev { left: 0.75rem; }
+    .lightbox-nav--next { right: 0.75rem; }
+    .lightbox-bar { padding: 1rem 1.25rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.25rem; border-top: 1px solid var(--m-rule); }
+    .lightbox-kicker { font-family: var(--font-mono); font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brick); }
+    .lightbox-title { margin: 0.18rem 0 0; font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; color: var(--m-ink); }
+    .lightbox-sub { font-size: 0.85rem; color: var(--m-ink-2); margin-top: 0.1rem; }
+    .lightbox-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .lightbox-counter { font-family: var(--font-mono); font-size: 0.7rem; color: var(--m-ink-3); }
+
     .site-footer { border-top: 2px solid var(--brick); padding-block: 2rem 2.75rem; background: var(--m-stone); }
     .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--m-ink-2); }
 
     @media (max-width: 960px) {
       .days-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .days-grid.is-list .day-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .places-grid, .places-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .bottom-grid, .placard-bar { grid-template-columns: 1fr; }
       .placard-cell { padding: 0.85rem 0; border-right: none; border-bottom: 1px solid var(--m-rule); }
       .placard-cell:not(:first-child) { padding-left: 0; }
@@ -185,6 +241,7 @@
       .brand-meta, .view-toggle { display: none; }
       .main-nav { gap: 1.1rem; }
       .days-grid, .days-grid.is-list .day-slots { grid-template-columns: 1fr; }
+      .places-grid, .places-grid--4 { grid-template-columns: 1fr; }
       .hero-frame img { aspect-ratio: 16 / 10; }
       .booking-item { grid-template-columns: 22px minmax(0, 1fr); }
       .booking-link { grid-column: 2; justify-self: start; margin-top: 0.35rem; }
@@ -355,6 +412,8 @@
             </article>
           </div>
 
+          <div class="day-gallery" id="day-gallery" aria-live="polite" hidden></div>
+
           <div class="travel-strip travel-strip--bottom">
             <span><strong>Mer 9 déc · Départ</strong> Check-out 11h, bagages gardés à la réception · Penn Station → JFK ($14/pers).</span>
           </div>
@@ -449,6 +508,28 @@
         <span>The Hollingsworth · 70 W 37th St</span>
       </div>
     </footer>
+
+    <div class="lightbox" id="photo-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Aperçu photo">
+      <div class="lightbox-panel">
+        <div class="lightbox-media">
+          <img id="lightbox-img" src="" alt="" />
+          <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Fermer">×</button>
+          <button type="button" class="lightbox-nav lightbox-nav--prev" id="lightbox-prev" aria-label="Photo précédente">←</button>
+          <button type="button" class="lightbox-nav lightbox-nav--next" id="lightbox-next" aria-label="Photo suivante">→</button>
+        </div>
+        <div class="lightbox-bar">
+          <div>
+            <div class="lightbox-kicker" id="lightbox-kicker"></div>
+            <h3 class="lightbox-title" id="lightbox-title"></h3>
+            <div class="lightbox-sub" id="lightbox-sub"></div>
+          </div>
+          <div class="lightbox-actions">
+            <span class="lightbox-counter" id="lightbox-counter"></span>
+            <a class="booking-link" id="lightbox-maps" href="#" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -462,8 +543,197 @@
       catch {}
     }
 
+    const DAY_PLACES = {
+      'jeu-3': {
+        label: 'Jeu 3 déc · Midtown & Noël',
+        theme: '',
+        cols: 4,
+        places: [
+          { period: 'Matin', name: 'Bryant Park', meta: 'Winter Village · 42nd St & 6th Ave', img: 'images/bryant-park.jpg', q: 'Bryant Park New York' },
+          { period: 'Matin', name: 'Grand Central Terminal', meta: '89 E 42nd St · Midtown', img: 'images/grand-central.jpg', q: 'Grand Central Terminal New York' },
+          { period: 'Matin · 10h', name: 'SUMMIT One Vanderbilt', meta: '45 E 42nd St · Observatoire', img: 'images/summit-one-vanderbilt.jpg', q: 'SUMMIT One Vanderbilt New York' },
+          { period: 'Midi', name: 'Los Tacos No. 1', meta: '229 W 43rd St / Grand Central', img: 'images/los-tacos.jpg', q: 'Los Tacos No. 1 Midtown New York' },
+          { period: 'Après-midi', name: 'Rockefeller Center & 5th Ave', meta: '45 Rockefeller Plaza · Sapin & vitrines', img: 'images/rockefeller.jpg', q: 'Rockefeller Center Christmas Tree New York' },
+          { period: 'Après-midi', name: 'MoMA', meta: '11 W 53rd St · Art moderne', img: 'images/moma.jpg', q: 'Museum of Modern Art MoMA New York' },
+          { period: 'Soir', name: 'Times Square', meta: 'Broadway & 7th Ave · De nuit', img: 'images/times-square.jpg', q: 'Times Square New York' },
+          { period: 'Soir', name: 'McGee’s Pub', meta: '240 W 55th St · Inspiration HIMYM', img: 'images/mcgees-pub.jpg', q: 'McGees Pub 240 W 55th St New York' }
+        ]
+      },
+      'ven-4': {
+        label: 'Ven 4 déc · Central Park & musées',
+        theme: 'day-gallery--pine',
+        cols: 3,
+        places: [
+          { period: 'Matin · 10h', name: 'Musée d’Histoire Naturelle', meta: '200 Central Park West · UWS', img: 'images/amnh.jpg', q: 'American Museum of Natural History New York' },
+          { period: 'Midi', name: 'Levain Bakery', meta: '167 W 74th St · Cookies iconiques', img: 'images/levain-bakery.jpg', q: 'Levain Bakery 167 W 74th St New York' },
+          { period: 'Midi', name: 'Zabar’s', meta: '2245 Broadway · Épicerie UWS', img: 'images/zabars.jpg', q: 'Zabars 2245 Broadway New York' },
+          { period: 'Après-midi', name: 'The Empire Hotel', meta: '44 W 63rd St · Lincoln Square', img: 'images/empire-hotel.jpg', q: 'The Empire Hotel 44 W 63rd St New York' },
+          { period: 'Après-midi', name: 'Central Park · Bethesda & Cherry Hill', meta: 'Mid-Park · 72nd St', img: 'images/central-park.jpg', q: 'Bethesda Terrace Central Park New York' },
+          { period: 'Soir · Nocturne', name: 'The Met', meta: '1000 5th Ave · Ouvert jusqu’à 21h', img: 'images/met.jpg', q: 'The Metropolitan Museum of Art New York' }
+        ]
+      },
+      'sam-5': {
+        label: 'Sam 5 déc · Brooklyn',
+        theme: 'day-gallery--ochre',
+        cols: 3,
+        places: [
+          { period: 'Matin', name: 'Williamsburg · Bedford Ave', meta: 'Bedford Ave & N 7th St · Brooklyn', img: 'images/williamsburg.jpg', q: 'Bedford Avenue Williamsburg Brooklyn' },
+          { period: 'Matin', name: 'Domino Park', meta: '15 River St · Front de mer Williamsburg', img: 'images/domino-park.jpg', q: 'Domino Park Williamsburg Brooklyn' },
+          { period: 'Midi', name: 'L’Industrie Pizzeria', meta: '254 S 2nd St · Burrata slice', img: 'images/lindustrie.jpg', q: 'LIndustrie Pizzeria 254 S 2nd St Brooklyn' },
+          { period: 'Après-midi', name: 'NYC Ferry · East River', meta: 'South Williamsburg → DUMBO', img: 'images/nyc-ferry.jpg', q: 'NYC Ferry South Williamsburg Landing Brooklyn' },
+          { period: 'Après-midi', name: 'DUMBO · Washington St', meta: 'Vue iconique sur le Manhattan Bridge', img: 'images/dumbo.jpg', q: 'Washington Street DUMBO Brooklyn' },
+          { period: 'Soir · 16h', name: 'Pont de Brooklyn', meta: 'Traversée au coucher du soleil', img: 'images/brooklyn-bridge.jpg', q: 'Brooklyn Bridge Pedestrian Walkway New York' }
+        ]
+      },
+      'dim-6': {
+        label: 'Dim 6 déc · Harlem, Flatiron & SoHo',
+        theme: 'day-gallery--brownstone',
+        cols: 3,
+        places: [
+          { period: 'Matin', name: 'Harlem · Messe Gospel', meta: 'Églises historiques de Harlem', img: 'images/harlem-gospel.jpg', q: 'Abyssinian Baptist Church Harlem New York' },
+          { period: 'Midi', name: 'Sylvia’s Restaurant', meta: '328 Malcolm X Blvd · Soul food', img: 'images/sylvias.jpg', q: 'Sylvias Restaurant 328 Malcolm X Blvd New York' },
+          { period: 'Après-midi', name: 'Flatiron Building', meta: '175 5th Ave · 23rd St', img: 'images/flatiron.jpg', q: 'Flatiron Building New York' },
+          { period: 'Après-midi', name: 'SoHo · Greene St', meta: 'Façades cast-iron historiques', img: 'images/soho.jpg', q: 'Greene Street SoHo New York' },
+          { period: 'Soir', name: 'Chinatown · Doyers St', meta: 'Ruelle courbée emblématique', img: 'images/chinatown-doyers.jpg', q: 'Doyers Street Chinatown New York' },
+          { period: 'Soir', name: 'Chinatown · Dumplings', meta: 'Pell St & Mott St · Cash conseillé', img: 'images/chinatown-dumplings.jpg', q: 'Chinatown Dumplings Pell Street New York' }
+        ]
+      },
+      'lun-7': {
+        label: 'Lun 7 déc · Downtown & Dyker Heights',
+        theme: '',
+        cols: 3,
+        places: [
+          { period: 'Matin · 9h', name: 'Statue de la Liberté', meta: 'Départ Battery Park · Statue City Cruises', img: 'images/statue-liberty.jpg', q: 'Statue of Liberty Battery Park New York' },
+          { period: 'Matin', name: 'Ellis Island', meta: 'Musée national de l’immigration', img: 'images/ellis-island.jpg', q: 'Ellis Island National Museum of Immigration' },
+          { period: 'Midi', name: 'Google · St. John’s Terminal', meta: '550 Washington St · Hudson Square', img: 'images/st-johns-terminal.jpg', q: 'Google St Johns Terminal 550 Washington St New York' },
+          { period: 'Après-midi', name: 'Mémorial du 11 Septembre', meta: '180 Greenwich St · World Trade Center', img: 'images/memorial-911.jpg', q: '9/11 Memorial Pools New York' },
+          { period: 'Après-midi', name: 'Wall Street & Charging Bull', meta: 'Bowling Green · Financial District', img: 'images/wall-street.jpg', q: 'Charging Bull Bowling Green New York' },
+          { period: 'Soir', name: 'Dyker Heights', meta: '83rd–86th St, 11th–13th Ave · Brooklyn', img: 'images/dyker-heights.jpg', q: 'Dyker Heights Christmas Lights Brooklyn' }
+        ]
+      },
+      'mar-8': {
+        label: 'Mar 8 déc · Village, Chelsea & Top of the Rock',
+        theme: 'day-gallery--pine',
+        cols: 4,
+        places: [
+          { period: 'Matin', name: 'Immeuble de Friends', meta: '90 Bedford St · Greenwich Village', img: 'images/friends-building.jpg', q: 'Friends Apartment Building 90 Bedford St New York' },
+          { period: 'Matin', name: 'The High Line', meta: 'Ancienne voie ferrée · Chelsea', img: 'images/high-line.jpg', q: 'The High Line New York' },
+          { period: 'Midi', name: 'Google Chelsea', meta: '111 8th Ave · Déjeuner', img: 'images/google-chelsea.jpg', q: 'Google NYC 111 8th Ave New York' },
+          { period: 'Midi', name: 'Pier 57 · Rooftop Park', meta: '25 11th Ave · Vue gratuite sur l’Hudson', img: 'images/pier-57.jpg', q: 'Pier 57 Rooftop Park New York' },
+          { period: 'Après-midi', name: 'Chelsea Market', meta: '75 9th Ave · Food hall & boutiques', img: 'images/chelsea-market.jpg', q: 'Chelsea Market 75 9th Ave New York' },
+          { period: 'Après-midi · 15h45', name: 'Top of the Rock', meta: '30 Rockefeller Plaza · Coucher du soleil', img: 'images/top-of-the-rock.jpg', q: 'Top of the Rock 30 Rockefeller Plaza New York' },
+          { period: 'Soir', name: 'West Village', meta: 'Bleecker St & Grove St · Dîner', img: 'images/west-village.jpg', q: 'West Village Bleecker Street New York' },
+          { period: 'Soir', name: 'Le Bain · The Standard', meta: '848 Washington St · Rooftop', img: 'images/le-bain.jpg', q: 'Le Bain The Standard High Line New York' }
+        ]
+      }
+    };
+
+    const mapsSearchUrl = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+    const mapsRouteUrl = places => `https://www.google.com/maps/dir/${places.map(p => encodeURIComponent(p.q)).join('/')}`;
+
+    const PIN_SVG = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 14s5-4.4 5-8.2A5 5 0 0 0 3 5.8C3 9.6 8 14 8 14Z"/><circle cx="8" cy="5.8" r="1.6"/></svg>';
+    const ZOOM_SVG = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 2h4v4M6 14H2v-4M14 2l-4.5 4.5M2 14l4.5-4.5"/></svg>';
+
     const checked = loadChecked();
     const daysGrid = document.getElementById('days-grid');
+    const dayGallery = document.getElementById('day-gallery');
+    let activeDayKey = null;
+    let lightboxIndex = 0;
+
+    function renderDayGallery(dayKey) {
+      const data = DAY_PLACES[dayKey];
+      if (!data) {
+        activeDayKey = null;
+        dayGallery.hidden = true;
+        dayGallery.innerHTML = '';
+        return;
+      }
+      activeDayKey = dayKey;
+      dayGallery.className = 'day-gallery' + (data.theme ? ' ' + data.theme : '');
+      const gridClass = data.cols === 4 ? 'places-grid places-grid--4' : 'places-grid';
+      const cardsHtml = data.places.map((p, idx) => `
+        <article class="place-card">
+          <button type="button" class="place-photo-btn" data-lightbox-idx="${idx}" aria-label="Agrandir la photo : ${p.name}">
+            <img src="${p.img}" alt="${p.name} — New York" loading="lazy" decoding="async" />
+            <span class="place-period">${p.period}</span>
+            <span class="place-zoom-hint" aria-hidden="true">${ZOOM_SVG}</span>
+          </button>
+          <div class="place-body">
+            <div class="place-name">${p.name}</div>
+            <div class="place-meta">${p.meta}</div>
+            <div class="place-foot">
+              <a class="place-maps-link" href="${mapsSearchUrl(p.q)}" target="_blank" rel="noopener noreferrer">${PIN_SVG}Google Maps ↗</a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      dayGallery.innerHTML = `
+        <div class="gallery-head">
+          <div class="gallery-head-left">
+            <span class="gallery-kicker">Aperçu des lieux · Google Maps</span>
+            <span class="gallery-count">${data.places.length} étapes — cliquer sur une photo pour agrandir</span>
+          </div>
+          <a class="gallery-route-link" href="${mapsRouteUrl(data.places)}" target="_blank" rel="noopener noreferrer">Itinéraire du jour sur Maps ↗</a>
+        </div>
+        <div class="${gridClass}">${cardsHtml}</div>
+      `;
+      dayGallery.hidden = false;
+    }
+
+    const lightbox = document.getElementById('photo-lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbKicker = document.getElementById('lightbox-kicker');
+    const lbTitle = document.getElementById('lightbox-title');
+    const lbSub = document.getElementById('lightbox-sub');
+    const lbCounter = document.getElementById('lightbox-counter');
+    const lbMaps = document.getElementById('lightbox-maps');
+
+    function updateLightbox() {
+      const data = DAY_PLACES[activeDayKey];
+      if (!data) return;
+      const total = data.places.length;
+      lightboxIndex = (lightboxIndex + total) % total;
+      const p = data.places[lightboxIndex];
+      lbImg.src = p.img;
+      lbImg.alt = `${p.name} — New York`;
+      lbKicker.textContent = `${data.label} · ${p.period}`;
+      lbTitle.textContent = p.name;
+      lbSub.textContent = p.meta;
+      lbCounter.textContent = `${lightboxIndex + 1} / ${total}`;
+      lbMaps.href = mapsSearchUrl(p.q);
+    }
+
+    function openLightbox(idx) {
+      lightboxIndex = idx;
+      updateLightbox();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    dayGallery.addEventListener('click', e => {
+      const btn = e.target.closest('[data-lightbox-idx]');
+      if (!btn) return;
+      openLightbox(Number(btn.getAttribute('data-lightbox-idx')));
+    });
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev').addEventListener('click', () => { lightboxIndex -= 1; updateLightbox(); });
+    document.getElementById('lightbox-next').addEventListener('click', () => { lightboxIndex += 1; updateLightbox(); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') { lightboxIndex -= 1; updateLightbox(); }
+      else if (e.key === 'ArrowRight') { lightboxIndex += 1; updateLightbox(); }
+    });
 
     document.getElementById('day-filters').addEventListener('click', e => {
       const btn = e.target.closest('[data-day-filter]');
@@ -473,8 +743,13 @@
       document.querySelectorAll('[data-day-card]').forEach(card => {
         card.classList.toggle('is-hidden', selected !== 'all' && card.getAttribute('data-day-card') !== selected);
       });
-      if (selected !== 'all') daysGrid.classList.add('is-list');
-      else daysGrid.classList.toggle('is-list', document.querySelector('[data-view="list"]').classList.contains('is-active'));
+      if (selected !== 'all') {
+        daysGrid.classList.add('is-list');
+        renderDayGallery(selected);
+      } else {
+        daysGrid.classList.toggle('is-list', document.querySelector('[data-view="list"]').classList.contains('is-active'));
+        renderDayGallery(null);
+      }
     });
 
     document.getElementById('view-toggle').addEventListener('click', e => {
