@@ -249,7 +249,7 @@
     .map-shell { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(300px, 360px); border: 1px solid var(--m-rule); border-top: 3px solid var(--brick); border-radius: var(--radius); background: var(--m-surface); overflow: hidden; }
     .map-stage { position: relative; min-height: 540px; background: #EFE9DF; }
     #trip-map { width: 100%; height: 100%; min-height: 540px; z-index: 1; font-family: var(--font-body); }
-    #trip-map .leaflet-tile-pane { filter: sepia(0.08) saturate(0.95) contrast(1.01); }
+    #trip-map .leaflet-tile-pane { filter: sepia(0.14) saturate(0.84) contrast(1.01) brightness(1.01); }
     #trip-map .leaflet-control-zoom { border: 1px solid var(--m-rule) !important; box-shadow: 0 2px 10px rgba(31,24,21,0.08) !important; border-radius: var(--radius) !important; overflow: hidden; }
     #trip-map .leaflet-control-zoom a { background: var(--m-surface) !important; color: var(--m-ink) !important; border-bottom-color: var(--m-rule) !important; width: 30px !important; height: 30px !important; line-height: 30px !important; font-family: var(--font-mono); }
     #trip-map .leaflet-control-zoom a:hover { background: var(--m-stone) !important; color: var(--brick) !important; }
@@ -1220,9 +1220,8 @@
           zoom: 12,
           scrollWheelZoom: false
         });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OpenStreetMap &copy; CARTO',
-          subdomains: 'abcd',
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>',
           maxZoom: 19
         }).addTo(leafletMap);
         routeLayer = L.layerGroup().addTo(leafletMap);
