@@ -297,6 +297,69 @@
 
     .map-legend-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.25rem; margin-top: 0.85rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--m-ink-3); }
 
+    .nav-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 17px; height: 17px; padding-inline: 4px; margin-left: 0.25rem; border-radius: 999px; background: var(--brick); color: #FFFDF9; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500; line-height: 1; vertical-align: middle; }
+    .nav-badge[hidden] { display: none; }
+
+    .day-card-actions { display: inline-flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
+    .day-note-btn { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--m-ink-3); padding: 0.18rem 0.48rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-bg); white-space: nowrap; transition: all 160ms var(--ease); }
+    .day-note-btn:hover { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); }
+    .day-note-btn.has-notes { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); font-weight: 500; }
+
+    .day-notes { border-top: 1px dashed var(--m-rule); background: #FCF8F2; padding: 0.75rem 1.3rem 0.85rem; border-radius: 0 0 var(--radius) var(--radius); }
+    .day-notes[hidden] { display: none; }
+    .day-tip:not(:last-child) { border-radius: 0; }
+    .day-notes-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+    .day-notes-list + .day-note-form { margin-top: 0.6rem; }
+    .day-note-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.45rem; align-items: start; font-size: 0.84rem; line-height: 1.42; color: var(--m-ink); padding: 0.42rem 0.55rem; background: var(--m-surface); border: 1px solid #EAE0D4; border-left: 2.5px solid var(--brick); border-radius: 2px; }
+    .day-card--pine .day-note-item { border-left-color: var(--pine); }
+    .day-card--ochre .day-note-item { border-left-color: var(--ochre); }
+    .day-card--brownstone .day-note-item { border-left-color: var(--brownstone); }
+    .day-note-author { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--m-ink-3); margin-right: 0.4rem; }
+    .day-note-text { word-break: break-word; }
+    .day-note-del { width: 20px; height: 20px; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; color: var(--m-ink-3); font-size: 0.95rem; line-height: 1; transition: all 140ms var(--ease); }
+    .day-note-del:hover { color: var(--brick); background: var(--m-brick-soft); }
+
+    .day-note-form { display: flex; gap: 0.4rem; align-items: center; }
+    .day-note-form[hidden] { display: none; }
+    .day-note-input { flex: 1; min-width: 0; font-family: var(--font-body); font-size: 0.83rem; color: var(--m-ink); background: var(--m-surface); border: 1px solid var(--m-rule); border-radius: var(--radius); padding: 0.38rem 0.58rem; outline: none; transition: border-color 150ms var(--ease); }
+    .day-note-input:focus { border-color: var(--brick); }
+    .day-note-input::placeholder { color: var(--m-ink-3); }
+    .day-note-submit { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.4rem 0.62rem; border-radius: var(--radius); background: var(--brick); color: #FFFDF9; white-space: nowrap; transition: background 150ms var(--ease); }
+    .day-note-submit:hover { background: var(--brick-dark); }
+
+    .col-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+    .col-title-row .col-title { margin-bottom: 1.25rem; }
+
+    .notes-import-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.25rem; padding: 0.95rem 1.2rem; margin-bottom: 1.35rem; background: var(--m-brick-soft); border: 1px solid rgba(168,62,43,0.32); border-left: 3px solid var(--brick); border-radius: 0 var(--radius) var(--radius) 0; font-size: 0.89rem; color: var(--m-ink); }
+    .notes-import-banner[hidden] { display: none; }
+    .notes-import-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+    .notes-composer { display: grid; grid-template-columns: minmax(190px, 240px) auto minmax(0, 1fr) auto; gap: 0.6rem; align-items: center; padding: 1rem 1.15rem; background: var(--m-surface); border: 1px solid var(--m-rule); border-top: 3px solid var(--brick); border-radius: var(--radius); margin-bottom: 1.35rem; }
+    .notes-select, .notes-input { font-family: var(--font-body); font-size: 0.88rem; color: var(--m-ink); background: var(--m-bg); border: 1px solid var(--m-rule); border-radius: var(--radius); padding: 0.52rem 0.72rem; outline: none; transition: border-color 150ms var(--ease), background 150ms var(--ease); }
+    .notes-select:focus, .notes-input:focus { border-color: var(--brick); background: var(--m-surface); }
+    .notes-input::placeholder { color: var(--m-ink-3); }
+    .notes-author-toggle { display: inline-flex; border: 1px solid var(--m-rule); border-radius: var(--radius); overflow: hidden; background: var(--m-bg); }
+    .notes-author-btn { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.5rem 0.68rem; color: var(--m-ink-2); transition: all 140ms var(--ease); }
+    .notes-author-btn:hover { color: var(--brick); }
+    .notes-author-btn.is-active { background: var(--m-ink); color: #FFFDF9; }
+    .notes-add-btn { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.56rem 0.95rem; border-radius: var(--radius); background: var(--brick); color: #FFFDF9; white-space: nowrap; transition: background 150ms var(--ease); }
+    .notes-add-btn:hover { background: var(--brick-dark); }
+
+    .notes-board { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--m-rule); }
+    .notes-board-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.65rem 1rem; align-items: start; padding: 0.9rem 0.25rem; border-bottom: 1px solid var(--m-rule); }
+    .note-scope-pill { display: inline-flex; align-items: center; gap: 0.38rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.24rem 0.55rem; border: 1px solid var(--m-rule); border-radius: var(--radius); background: var(--m-surface); color: var(--m-ink-2); white-space: nowrap; margin-top: 0.08rem; }
+    .note-scope-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .note-row-body { font-size: 0.93rem; color: var(--m-ink); line-height: 1.5; word-break: break-word; }
+    .note-row-meta { margin-top: 0.2rem; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--m-ink-3); }
+    .note-row-actions { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .note-icon-btn { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.24rem 0.48rem; border: 1px solid var(--m-rule); border-radius: var(--radius); color: var(--m-ink-3); background: var(--m-surface); transition: all 140ms var(--ease); }
+    .note-icon-btn:hover { border-color: var(--brick); color: var(--brick); background: var(--m-brick-soft); }
+    .note-edit-input { width: 100%; font-family: var(--font-body); font-size: 0.91rem; color: var(--m-ink); background: var(--m-surface); border: 1px solid var(--brick); border-radius: var(--radius); padding: 0.38rem 0.6rem; outline: none; }
+
+    .notes-empty { padding: 1.85rem 1.25rem; text-align: center; background: var(--m-stone); border: 1px dashed #D3C4B4; border-radius: var(--radius); font-size: 0.9rem; color: var(--m-ink-2); line-height: 1.55; }
+    .notes-empty strong { color: var(--m-ink); }
+    .notes-foot-hint { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--m-ink-3); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem 1.25rem; }
+
     @media (max-width: 960px) {
       .days-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .days-grid.is-list .day-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -309,16 +372,24 @@
       .map-shell { grid-template-columns: 1fr; }
       .map-stage, #trip-map { min-height: 410px; }
       .map-sidebar { border-left: none; border-top: 1px solid var(--m-rule); max-height: 360px; }
+      .notes-composer { grid-template-columns: 1fr auto; }
+      .notes-input { grid-column: 1 / -1; }
+      .notes-add-btn { grid-column: 1 / -1; justify-self: start; }
     }
     @media (max-width: 640px) {
       .brand-meta, .view-toggle { display: none; }
-      .main-nav { gap: 0.9rem; font-size: 0.82rem; }
+      .main-nav { gap: 0.85rem; font-size: 0.82rem; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+      .main-nav::-webkit-scrollbar { display: none; }
       .days-grid, .days-grid.is-list .day-slots { grid-template-columns: 1fr; }
       .places-grid, .places-grid--4 { grid-template-columns: 1fr; }
       .hero-frame img { aspect-ratio: 16 / 10; }
       .booking-item { grid-template-columns: 22px minmax(0, 1fr); }
       .booking-link { grid-column: 2; justify-self: start; margin-top: 0.35rem; }
       .map-stage, #trip-map { min-height: 360px; }
+      .notes-composer { grid-template-columns: 1fr; }
+      .notes-author-toggle { justify-self: start; }
+      .notes-board-row { grid-template-columns: minmax(0, 1fr) auto; }
+      .note-scope-pill { grid-column: 1 / -1; justify-self: start; }
     }
   </style>
 </head>
@@ -337,6 +408,7 @@
           <a href="#reserver" class="nav-link">À réserver</a>
           <a href="#pratique" class="nav-link">Pratique</a>
           <a href="#bons-plans" class="nav-link">Adresses</a>
+          <a href="#notes" class="nav-link">Notes<span class="nav-badge" id="nav-notes-count" hidden>0</span></a>
         </nav>
       </div>
     </header>
@@ -615,6 +687,57 @@
         </div>
       </section>
       <!-- SYNC:EXTRAS_END -->
+
+      <section class="section" id="notes">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="mono-label">06 — Carnet de modifications</span>
+              <h2 class="section-title">Notes &amp; Modifs</h2>
+            </div>
+            <div class="map-head-actions">
+              <button type="button" class="map-action-btn map-action-btn--primary" id="notes-copy-btn">Copier le récap</button>
+              <button type="button" class="map-action-btn" id="notes-share-btn" title="Copier un lien contenant toutes vos notes pour l’envoyer par message">Partager le lien</button>
+              <button type="button" class="map-action-btn" id="notes-clear-btn" hidden>Tout effacer</button>
+            </div>
+          </div>
+
+          <div class="notes-import-banner" id="notes-import-banner" hidden>
+            <span id="notes-import-text">Des notes partagées ont été détectées dans ce lien.</span>
+            <div class="notes-import-actions">
+              <button type="button" class="map-action-btn map-action-btn--primary" id="notes-import-merge">Fusionner</button>
+              <button type="button" class="map-action-btn" id="notes-import-dismiss">Ignorer</button>
+            </div>
+          </div>
+
+          <form class="notes-composer" id="notes-composer" autocomplete="off">
+            <select class="notes-select" id="notes-scope" aria-label="Jour ou section concerné">
+              <option value="jeu-3">Jeu 3 déc · Midtown &amp; Noël</option>
+              <option value="ven-4">Ven 4 déc · Central Park &amp; musées</option>
+              <option value="sam-5">Sam 5 déc · Brooklyn</option>
+              <option value="dim-6">Dim 6 déc · Harlem, Flatiron &amp; SoHo</option>
+              <option value="lun-7">Lun 7 déc · Downtown &amp; Dyker Heights</option>
+              <option value="mar-8">Mar 8 déc · Village &amp; Chelsea</option>
+              <option value="reserver">À réserver</option>
+              <option value="adresses">Adresses &amp; restos</option>
+              <option value="general" selected>Général</option>
+            </select>
+            <div class="notes-author-toggle" id="notes-author-toggle" role="group" aria-label="Auteur de la note">
+              <button type="button" class="notes-author-btn is-active" data-author="Alex">Alex</button>
+              <button type="button" class="notes-author-btn" data-author="Sarah">Sarah</button>
+            </div>
+            <input type="text" class="notes-input" id="notes-input" placeholder="Ex. Remplacer Le Bain mardi soir par un bar à cocktails dans West Village…" aria-label="Texte de la note" />
+            <button type="submit" class="notes-add-btn">+ Ajouter</button>
+          </form>
+
+          <div id="notes-board-wrap"></div>
+
+          <div class="notes-foot-hint">
+            <span>Sauvegardé localement dans ce navigateur · Clique sur « + Note » dans n’importe quelle journée pour annoter directement le planning.</span>
+            <span>« Copier le récap » génère un texte prêt à coller pour appliquer les modifs au site.</span>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -1284,6 +1407,502 @@
     }
 
     initTripMap();
+
+    /* --- Local Notes & Modifications (Option 1: localStorage + Copy Recap + Share Link) --- */
+    function initTripNotes() {
+      const NOTES_KEY = 'nyc_alexandre_sarah_notes_v1';
+      const AUTHOR_KEY = 'nyc_alexandre_sarah_author_v1';
+
+      const NOTE_SCOPES = [
+        { id: 'jeu-3',    short: 'Jeu 3',    label: 'Jeu 3 déc · Midtown & Noël',          color: '#A83E2B' },
+        { id: 'ven-4',    short: 'Ven 4',    label: 'Ven 4 déc · Central Park & musées',   color: '#2E4F3E' },
+        { id: 'sam-5',    short: 'Sam 5',    label: 'Sam 5 déc · Brooklyn',                color: '#C48A2B' },
+        { id: 'dim-6',    short: 'Dim 6',    label: 'Dim 6 déc · Harlem, Flatiron & SoHo', color: '#5C4338' },
+        { id: 'lun-7',    short: 'Lun 7',    label: 'Lun 7 déc · Downtown & Dyker Heights',color: '#355C7D' },
+        { id: 'mar-8',    short: 'Mar 8',    label: 'Mar 8 déc · Village & Chelsea',       color: '#7B4B6A' },
+        { id: 'reserver', short: 'À réserver', label: 'À réserver',                        color: '#A83E2B' },
+        { id: 'adresses', short: 'Adresses', label: 'Adresses & restos',                   color: '#C85A1E' },
+        { id: 'general',  short: 'Général',  label: 'Général',                             color: '#1F1815' }
+      ];
+      const SCOPE_BY_ID = Object.fromEntries(NOTE_SCOPES.map(s => [s.id, s]));
+
+      function loadNotes() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
+          if (!Array.isArray(raw)) return [];
+          return raw.filter(n => n && typeof n.text === 'string' && n.text.trim()).map(n => ({
+            id: typeof n.id === 'string' ? n.id : makeNoteId(),
+            scope: SCOPE_BY_ID[n.scope] ? n.scope : 'general',
+            author: n.author === 'Sarah' ? 'Sarah' : (n.author === 'Alex' ? 'Alex' : ''),
+            text: n.text.trim(),
+            createdAt: typeof n.createdAt === 'number' ? n.createdAt : Date.now()
+          }));
+        } catch { return []; }
+      }
+
+      function saveNotes() {
+        try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {}
+      }
+
+      function loadAuthor() {
+        try {
+          const v = localStorage.getItem(AUTHOR_KEY);
+          return v === 'Sarah' ? 'Sarah' : 'Alex';
+        } catch { return 'Alex'; }
+      }
+
+      function saveAuthor(val) {
+        try { localStorage.setItem(AUTHOR_KEY, val); } catch {}
+      }
+
+      function makeNoteId() {
+        return 'n_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+      }
+
+      function encodeNotesPayload(list) {
+        const compact = list.map(n => [n.scope, n.author || '', n.text]);
+        const bytes = new TextEncoder().encode(JSON.stringify(compact));
+        let bin = '';
+        bytes.forEach(b => { bin += String.fromCharCode(b); });
+        return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      }
+
+      function decodeNotesPayload(encoded) {
+        try {
+          const pad = '='.repeat((4 - (encoded.length % 4)) % 4);
+          const bin = atob(encoded.replace(/-/g, '+').replace(/_/g, '/') + pad);
+          const bytes = Uint8Array.from(bin, ch => ch.charCodeAt(0));
+          const parsed = JSON.parse(new TextDecoder().decode(bytes));
+          if (!Array.isArray(parsed)) return [];
+          return parsed
+            .filter(item => Array.isArray(item) && typeof item[2] === 'string' && item[2].trim())
+            .slice(0, 100)
+            .map(item => ({
+              id: makeNoteId(),
+              scope: SCOPE_BY_ID[item[0]] ? item[0] : 'general',
+              author: item[1] === 'Sarah' ? 'Sarah' : (item[1] === 'Alex' ? 'Alex' : ''),
+              text: item[2].trim().slice(0, 600),
+              createdAt: Date.now()
+            }));
+        } catch { return []; }
+      }
+
+      async function copyText(str) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          try { await navigator.clipboard.writeText(str); return true; } catch {}
+        }
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = str;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          ta.remove();
+          return ok;
+        } catch { return false; }
+      }
+
+      function flashButton(btn, label, fallback) {
+        if (!btn) return;
+        const orig = fallback || btn.dataset.origLabel || btn.textContent;
+        btn.dataset.origLabel = orig;
+        btn.textContent = label;
+        clearTimeout(btn._flashTimer);
+        btn._flashTimer = setTimeout(() => { btn.textContent = orig; }, 1900);
+      }
+
+      let notes = loadNotes();
+      let currentAuthor = loadAuthor();
+      let editingNoteId = null;
+      let pendingImport = [];
+      let clearConfirmArmed = false;
+      let clearConfirmTimer = null;
+      const openCardForms = new Set();
+
+      const navBadge = document.getElementById('nav-notes-count');
+      const boardWrap = document.getElementById('notes-board-wrap');
+      const composer = document.getElementById('notes-composer');
+      const scopeSelect = document.getElementById('notes-scope');
+      const noteInput = document.getElementById('notes-input');
+      const authorToggle = document.getElementById('notes-author-toggle');
+      const copyBtn = document.getElementById('notes-copy-btn');
+      const shareBtn = document.getElementById('notes-share-btn');
+      const clearBtn = document.getElementById('notes-clear-btn');
+      const importBanner = document.getElementById('notes-import-banner');
+      const importText = document.getElementById('notes-import-text');
+      const importMergeBtn = document.getElementById('notes-import-merge');
+      const importDismissBtn = document.getElementById('notes-import-dismiss');
+
+      function setAuthor(val) {
+        currentAuthor = val === 'Sarah' ? 'Sarah' : 'Alex';
+        saveAuthor(currentAuthor);
+        authorToggle?.querySelectorAll('[data-author]').forEach(btn => {
+          btn.classList.toggle('is-active', btn.getAttribute('data-author') === currentAuthor);
+        });
+      }
+      setAuthor(currentAuthor);
+
+      authorToggle?.addEventListener('click', e => {
+        const btn = e.target.closest('[data-author]');
+        if (!btn) return;
+        setAuthor(btn.getAttribute('data-author'));
+      });
+
+      function addNote(scope, text) {
+        const clean = (text || '').trim();
+        if (!clean) return;
+        notes.push({
+          id: makeNoteId(),
+          scope: SCOPE_BY_ID[scope] ? scope : 'general',
+          author: currentAuthor,
+          text: clean,
+          createdAt: Date.now()
+        });
+        saveNotes();
+        renderAllNotes();
+      }
+
+      function deleteNote(id) {
+        notes = notes.filter(n => n.id !== id);
+        if (editingNoteId === id) editingNoteId = null;
+        saveNotes();
+        renderAllNotes();
+      }
+
+      function updateNote(id, newText) {
+        const clean = (newText || '').trim();
+        if (!clean) return;
+        const target = notes.find(n => n.id === id);
+        if (target) target.text = clean;
+        editingNoteId = null;
+        saveNotes();
+        renderAllNotes();
+      }
+
+      function buildMarkdownRecap() {
+        if (!notes.length) return '';
+        const lines = ['# Notes & modifications — New York (2 → 9 déc)'];
+        NOTE_SCOPES.forEach(scope => {
+          const items = notes.filter(n => n.scope === scope.id);
+          if (!items.length) return;
+          lines.push('', `## ${scope.label}`);
+          items.forEach(n => {
+            const prefix = n.author ? `[${n.author}] ` : '';
+            lines.push(`- ${prefix}${n.text}`);
+          });
+        });
+        return lines.join('\n');
+      }
+
+      function jumpToComposer(scopeId) {
+        if (scopeSelect && SCOPE_BY_ID[scopeId]) scopeSelect.value = scopeId;
+        const sec = document.getElementById('notes');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => noteInput?.focus(), 350);
+      }
+
+      // Inject "+ Note" buttons & inline note containers on each day card (resilient to doc syncs)
+      document.querySelectorAll('[data-day-card]').forEach(card => {
+        const dayId = card.getAttribute('data-day-card');
+        const head = card.querySelector('.day-card-head');
+        const row = head?.querySelector('.day-card-head-row');
+        if (!row || card.querySelector('.day-note-btn')) return;
+
+        let actions = row.querySelector('.day-card-actions');
+        if (!actions) {
+          actions = document.createElement('div');
+          actions.className = 'day-card-actions';
+          const jumpBtn = row.querySelector('.day-map-jump');
+          if (jumpBtn) actions.appendChild(jumpBtn);
+          row.appendChild(actions);
+        }
+
+        const noteBtn = document.createElement('button');
+        noteBtn.type = 'button';
+        noteBtn.className = 'day-note-btn';
+        noteBtn.setAttribute('data-day-note-toggle', dayId);
+        noteBtn.textContent = '+ Note';
+        noteBtn.setAttribute('aria-label', 'Ajouter ou voir les notes de cette journée');
+        actions.insertBefore(noteBtn, actions.firstChild);
+
+        const box = document.createElement('div');
+        box.className = 'day-notes';
+        box.setAttribute('data-day-notes', dayId);
+        box.hidden = true;
+        box.innerHTML = `
+          <ul class="day-notes-list"></ul>
+          <form class="day-note-form" hidden autocomplete="off">
+            <input type="text" class="day-note-input" placeholder="Idée ou modif pour ce jour…" aria-label="Nouvelle note pour cette journée" />
+            <button type="submit" class="day-note-submit">OK</button>
+          </form>
+        `;
+        card.appendChild(box);
+
+        noteBtn.addEventListener('click', () => {
+          if (openCardForms.has(dayId)) {
+            openCardForms.delete(dayId);
+          } else {
+            openCardForms.add(dayId);
+          }
+          renderDayCardNotes(dayId);
+          if (openCardForms.has(dayId)) {
+            box.querySelector('.day-note-input')?.focus();
+          }
+        });
+
+        box.querySelector('.day-note-form')?.addEventListener('submit', e => {
+          e.preventDefault();
+          const input = box.querySelector('.day-note-input');
+          if (!input || !input.value.trim()) return;
+          addNote(dayId, input.value);
+          input.value = '';
+          openCardForms.delete(dayId);
+          renderDayCardNotes(dayId);
+        });
+
+        box.addEventListener('click', e => {
+          const del = e.target.closest('[data-del-note]');
+          if (!del) return;
+          deleteNote(del.getAttribute('data-del-note'));
+        });
+      });
+
+      // Inject quick "+ Note" buttons on "À réserver" and "Restaurants, verres & idées" headers
+      [
+        { selector: '#reserver .col-title', scope: 'reserver' },
+        { selector: '#bons-plans .col-title', scope: 'adresses' }
+      ].forEach(({ selector, scope }) => {
+        const heading = document.querySelector(selector);
+        if (!heading || heading.parentElement?.classList.contains('col-title-row')) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'col-title-row';
+        heading.parentNode.insertBefore(wrap, heading);
+        wrap.appendChild(heading);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day-note-btn';
+        btn.textContent = '+ Note';
+        btn.setAttribute('aria-label', `Ajouter une note pour ${SCOPE_BY_ID[scope].label}`);
+        btn.addEventListener('click', () => jumpToComposer(scope));
+        wrap.appendChild(btn);
+      });
+
+      function renderDayCardNotes(dayId) {
+        const card = document.querySelector(`[data-day-card="${dayId}"]`);
+        if (!card) return;
+        const dayNotes = notes.filter(n => n.scope === dayId);
+        const toggleBtn = card.querySelector(`[data-day-note-toggle="${dayId}"]`);
+        const box = card.querySelector(`[data-day-notes="${dayId}"]`);
+        const listEl = box?.querySelector('.day-notes-list');
+        const formEl = box?.querySelector('.day-note-form');
+        const isFormOpen = openCardForms.has(dayId);
+
+        if (toggleBtn) {
+          toggleBtn.textContent = dayNotes.length ? `Note (${dayNotes.length})` : '+ Note';
+          toggleBtn.classList.toggle('has-notes', dayNotes.length > 0);
+        }
+        if (!box || !listEl || !formEl) return;
+
+        listEl.innerHTML = dayNotes.map(n => `
+          <li class="day-note-item">
+            <span class="day-note-text">${n.author ? `<span class="day-note-author">${escapeHtml(n.author)}</span>` : ''}${escapeHtml(n.text)}</span>
+            <button type="button" class="day-note-del" data-del-note="${escapeHtml(n.id)}" aria-label="Supprimer cette note">×</button>
+          </li>
+        `).join('');
+        listEl.hidden = dayNotes.length === 0;
+        formEl.hidden = !isFormOpen;
+        box.hidden = dayNotes.length === 0 && !isFormOpen;
+      }
+
+      function renderMasterBoard() {
+        if (!boardWrap) return;
+        if (!notes.length) {
+          boardWrap.innerHTML = '<div class="notes-empty"><strong>Aucune note pour le moment.</strong><br />Clique sur <strong>+ Note</strong> dans une journée du planning ou ajoute une idée ci-dessus, puis clique sur <strong>Copier le récap</strong> pour mettre à jour le site.</div>';
+          return;
+        }
+        const ordered = [];
+        NOTE_SCOPES.forEach(s => {
+          notes.filter(n => n.scope === s.id).forEach(n => ordered.push(n));
+        });
+
+        boardWrap.innerHTML = `<ul class="notes-board">${ordered.map(n => {
+          const scope = SCOPE_BY_ID[n.scope] || NOTE_SCOPES[NOTE_SCOPES.length - 1];
+          const isEditing = editingNoteId === n.id;
+          return `
+            <li class="notes-board-row" data-note-row="${escapeHtml(n.id)}">
+              <span class="note-scope-pill"><span class="note-scope-dot" style="background:${scope.color}"></span>${escapeHtml(scope.short)}</span>
+              <div>
+                ${isEditing
+                  ? `<input type="text" class="note-edit-input" data-edit-input="${escapeHtml(n.id)}" value="${escapeHtml(n.text)}" aria-label="Modifier la note" />`
+                  : `<div class="note-row-body">${escapeHtml(n.text)}</div>`
+                }
+                ${n.author ? `<div class="note-row-meta">Par ${escapeHtml(n.author)}</div>` : ''}
+              </div>
+              <div class="note-row-actions">
+                ${isEditing
+                  ? `<button type="button" class="note-icon-btn" data-save-edit="${escapeHtml(n.id)}">OK</button>`
+                  : `<button type="button" class="note-icon-btn" data-start-edit="${escapeHtml(n.id)}" aria-label="Modifier">✎</button>`
+                }
+                <button type="button" class="note-icon-btn" data-del-note="${escapeHtml(n.id)}" aria-label="Supprimer">×</button>
+              </div>
+            </li>`;
+        }).join('')}</ul>`;
+
+        if (editingNoteId) {
+          const input = boardWrap.querySelector(`[data-edit-input="${editingNoteId}"]`);
+          if (input) {
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+          }
+        }
+      }
+
+      function renderAllNotes() {
+        if (navBadge) {
+          navBadge.textContent = String(notes.length);
+          navBadge.hidden = notes.length === 0;
+        }
+        if (clearBtn) {
+          clearBtn.hidden = notes.length === 0;
+          if (!notes.length) {
+            clearConfirmArmed = false;
+            clearBtn.textContent = 'Tout effacer';
+          }
+        }
+        document.querySelectorAll('[data-day-card]').forEach(card => {
+          renderDayCardNotes(card.getAttribute('data-day-card'));
+        });
+        renderMasterBoard();
+      }
+
+      composer?.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!noteInput || !noteInput.value.trim()) return;
+        addNote(scopeSelect?.value || 'general', noteInput.value);
+        noteInput.value = '';
+        noteInput.focus();
+      });
+
+      boardWrap?.addEventListener('click', e => {
+        const delBtn = e.target.closest('[data-del-note]');
+        if (delBtn) { deleteNote(delBtn.getAttribute('data-del-note')); return; }
+
+        const editBtn = e.target.closest('[data-start-edit]');
+        if (editBtn) {
+          editingNoteId = editBtn.getAttribute('data-start-edit');
+          renderMasterBoard();
+          return;
+        }
+
+        const saveBtn = e.target.closest('[data-save-edit]');
+        if (saveBtn) {
+          const id = saveBtn.getAttribute('data-save-edit');
+          const input = boardWrap.querySelector(`[data-edit-input="${id}"]`);
+          if (input) updateNote(id, input.value);
+        }
+      });
+
+      boardWrap?.addEventListener('keydown', e => {
+        const input = e.target.closest('[data-edit-input]');
+        if (!input) return;
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          updateNote(input.getAttribute('data-edit-input'), input.value);
+        } else if (e.key === 'Escape') {
+          editingNoteId = null;
+          renderMasterBoard();
+        }
+      });
+
+      copyBtn?.addEventListener('click', async () => {
+        if (!notes.length) {
+          flashButton(copyBtn, 'Aucune note');
+          return;
+        }
+        const ok = await copyText(buildMarkdownRecap());
+        flashButton(copyBtn, ok ? 'Récap copié ✓' : 'Erreur copie');
+      });
+
+      shareBtn?.addEventListener('click', async () => {
+        if (!notes.length) {
+          flashButton(shareBtn, 'Aucune note');
+          return;
+        }
+        const payload = encodeNotesPayload(notes);
+        const url = `${location.origin}${location.pathname}#notes=${payload}`;
+        const ok = await copyText(url);
+        flashButton(shareBtn, ok ? 'Lien copié ✓' : 'Erreur copie');
+      });
+
+      clearBtn?.addEventListener('click', () => {
+        if (!clearConfirmArmed) {
+          clearConfirmArmed = true;
+          clearBtn.textContent = 'Confirmer ?';
+          clearTimeout(clearConfirmTimer);
+          clearConfirmTimer = setTimeout(() => {
+            clearConfirmArmed = false;
+            clearBtn.textContent = 'Tout effacer';
+          }, 3500);
+          return;
+        }
+        clearTimeout(clearConfirmTimer);
+        clearConfirmArmed = false;
+        clearBtn.textContent = 'Tout effacer';
+        notes = [];
+        editingNoteId = null;
+        saveNotes();
+        renderAllNotes();
+      });
+
+      function checkHashImport() {
+        const hash = location.hash || '';
+        if (!hash.startsWith('#notes=')) return;
+        const raw = hash.slice('#notes='.length).trim();
+        if (!raw) return;
+        const incoming = decodeNotesPayload(raw);
+        if (!incoming.length) return;
+        const existingKeys = new Set(notes.map(n => `${n.scope}::${n.text.toLowerCase()}`));
+        const fresh = incoming.filter(n => !existingKeys.has(`${n.scope}::${n.text.toLowerCase()}`));
+        if (!fresh.length) {
+          try { history.replaceState(null, '', location.pathname + location.search + '#notes'); } catch {}
+          return;
+        }
+        pendingImport = fresh;
+        if (importText) {
+          const plural = fresh.length > 1 ? `${fresh.length} nouvelles notes partagées détectées` : '1 nouvelle note partagée détectée';
+          importText.textContent = `${plural} dans ce lien.`;
+        }
+        if (importBanner) importBanner.hidden = false;
+        document.getElementById('notes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      importMergeBtn?.addEventListener('click', () => {
+        if (pendingImport.length) {
+          notes = notes.concat(pendingImport);
+          pendingImport = [];
+          saveNotes();
+          renderAllNotes();
+        }
+        if (importBanner) importBanner.hidden = true;
+        try { history.replaceState(null, '', location.pathname + location.search + '#notes'); } catch {}
+      });
+
+      importDismissBtn?.addEventListener('click', () => {
+        pendingImport = [];
+        if (importBanner) importBanner.hidden = true;
+        try { history.replaceState(null, '', location.pathname + location.search + '#notes'); } catch {}
+      });
+
+      window.addEventListener('hashchange', checkHashImport);
+
+      renderAllNotes();
+      checkHashImport();
+    }
+
+    initTripNotes();
   </script>
 </body>
 </html>
